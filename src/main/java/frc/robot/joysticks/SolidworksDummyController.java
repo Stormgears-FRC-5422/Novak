@@ -34,6 +34,9 @@ public class SolidworksDummyController extends SolidworksJoystick {
     public boolean driveNoteCancel() {
         return false;
     }
+
+    @Override
+    public boolean intake() { return false; }
 }
 
 
