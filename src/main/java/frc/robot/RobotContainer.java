@@ -6,10 +6,9 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.DriveToBall;
-import frc.robot.commands.TurnToNextBall;
+import frc.robot.commands.vision.DriveToBall;
+import frc.robot.commands.vision.TurnToNextBall;
 import frc.robot.joysticks.IllegalJoystickTypeException;
 import frc.robot.joysticks.SolidworksJoystick;
 import frc.robot.joysticks.SolidworksJoystickFactory;
