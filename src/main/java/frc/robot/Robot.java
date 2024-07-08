@@ -15,7 +15,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    m_robotContainer = new RobotContainer();
+    try {
+      m_robotContainer = new RobotContainer();
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+    System.out.println("[DONE] Robot");
   }
 
   @Override

@@ -29,6 +29,10 @@ public class SolidworksXboxController extends SolidworksJoystick {
         return controller.getRightTrigger();
     }
 
+    @Override
+    public boolean driveNoteCancel() {
+        return controller.getAButtonIsHeld();
+    }
 
 
 }

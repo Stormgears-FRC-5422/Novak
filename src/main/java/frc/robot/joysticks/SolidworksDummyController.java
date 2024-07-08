@@ -29,6 +29,11 @@ public class SolidworksDummyController extends SolidworksJoystick {
     public double getTurbo() {
         return 0;
     }
+
+    @Override
+    public boolean driveNoteCancel() {
+        return false;
+    }
 }
 
 
