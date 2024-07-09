@@ -35,10 +35,10 @@ public class RobotContainer {
     public RobotContainer() throws IllegalJoystickTypeException {
         configureBindings();
         joystick = SolidworksJoystickFactory.getInstance(ButtonBoard.driveJoystick, ButtonBoard.driveJoystickPort);
-        if (Toggles.useVision) {
+        if (Toggles.useVision && Toggles.useDrive) {
             visionSubsystem = new VisionSubsystem(Vision.limelightId);
             turnToNextBall = new TurnToNextBall(visionSubsystem);
-            driveToBall = new DriveToBall(visionSubsystem);
+            driveToBall = new DriveToBall(drivetrain,visionSubsystem);
         }
         if (Toggles.useIntake) {
             intake = new Intake();
@@ -60,7 +60,7 @@ public class RobotContainer {
 
     private void configureBindings() {
         if (Toggles.useVision && Toggles.useDrive) {
-            new Trigger(() -> joystick.driveNoteCancel()).whileFalse(new TurnToNextBall(visionSubsystem).andThen(new DriveToBall(visionSubsystem)));
+            new Trigger(() -> joystick.driveNoteCancel()).whileFalse(turnToNextBall.andThen(driveToBall));
 
         }
         if (Toggles.useIntake) {
