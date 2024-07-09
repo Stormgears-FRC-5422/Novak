@@ -10,50 +10,65 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.vision.DriveToBall;
 import frc.robot.commands.vision.TurnToNextBall;
+import frc.robot.commands.JoyStickDrive;
 import frc.robot.joysticks.IllegalJoystickTypeException;
 import frc.robot.joysticks.SolidworksJoystick;
 import frc.robot.joysticks.SolidworksJoystickFactory;
 import frc.robot.Constants.*;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.VisionSubsystem;
 
 public class RobotContainer {
-  //Subsystems
-  VisionSubsystem visionSubsystem;
-  Intake intake;
+    //Subsystems
+    VisionSubsystem visionSubsystem;
+    Intake intake;
+    Drivetrain drivetrain;
 
-  //Commands
-  TurnToNextBall turnToNextBall;
-  DriveToBall driveToBall;
-  IntakeCommand intakeCommand;
+    //Commands
+    TurnToNextBall turnToNextBall;
+    DriveToBall driveToBall;
+    IntakeCommand intakeCommand;
 
-  SolidworksJoystick joystick;
-  public RobotContainer() throws IllegalJoystickTypeException {
-    configureBindings();
-    joystick = SolidworksJoystickFactory.getInstance(ButtonBoard.driveJoystick,ButtonBoard.driveJoystickPort);
-    if (Toggles.useVision) {
-        visionSubsystem = new VisionSubsystem(Vision.limelightId);
-        turnToNextBall = new TurnToNextBall(visionSubsystem);
-        driveToBall = new DriveToBall(visionSubsystem);
+    SolidworksJoystick joystick;
+
+    public RobotContainer() throws IllegalJoystickTypeException {
+        configureBindings();
+        joystick = SolidworksJoystickFactory.getInstance(ButtonBoard.driveJoystick, ButtonBoard.driveJoystickPort);
+        if (Toggles.useVision) {
+            visionSubsystem = new VisionSubsystem(Vision.limelightId);
+            turnToNextBall = new TurnToNextBall(visionSubsystem);
+            driveToBall = new DriveToBall(visionSubsystem);
+        }
+        if (Toggles.useIntake) {
+            intake = new Intake();
+            intakeCommand = new IntakeCommand(intake);
+        }
+        if (Toggles.useDrive) {
+            System.out.println("Create drive type " + Drive.driveType);
+            drivetrain = new Drivetrain();
+            if (Toggles.useController) {
+                System.out.println("Making 1st joystick!");
+
+                joystick = SolidworksJoystickFactory.getInstance(ButtonBoard.driveJoystick, ButtonBoard.driveJoystickPort);
+                JoyStickDrive driveWithJoystick = new JoyStickDrive(drivetrain, joystick);
+                drivetrain.setDefaultCommand(driveWithJoystick);
+            }
+        }
+        //To implement a trigger, make a function in the following classes: SolidworksJoystick, SolidworksLogitechController, SolidworksXboxController, SolidworksDummyController
     }
-    if (Toggles.useIntake) {
-      intake = new Intake();
-      intakeCommand = new IntakeCommand(intake);
-    }
-    //To implement a trigger, make a function in the following classes: SolidworksJoystick, SolidworksLogitechController, SolidworksXboxController, SolidworksDummyController
-  }
 
-  private void configureBindings() {
-    if (Toggles.useVision && Toggles.useDrive){
-      new Trigger(() -> joystick.driveNoteCancel()).whileFalse(new TurnToNextBall(visionSubsystem).andThen(new DriveToBall(visionSubsystem)));
+    private void configureBindings() {
+        if (Toggles.useVision && Toggles.useDrive) {
+            new Trigger(() -> joystick.driveNoteCancel()).whileFalse(new TurnToNextBall(visionSubsystem).andThen(new DriveToBall(visionSubsystem)));
 
+        }
+        if (Toggles.useIntake) {
+            new Trigger(() -> joystick.intake()).onTrue(intakeCommand);
+        }
     }
-    if (Toggles.useIntake) {
-      new Trigger(() -> joystick.intake()).onTrue(intakeCommand);
-    }
-  }
 
-  public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
-  }
+    public Command getAutonomousCommand() {
+        return Commands.print("No autonomous command configured");
+    }
 }

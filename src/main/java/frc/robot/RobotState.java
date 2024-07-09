@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class RobotState extends SubsystemBase {
@@ -19,5 +20,9 @@ public class RobotState extends SubsystemBase {
 
     public boolean getIsBallDetected() {
         return isBallDetected;
+    }
+
+    public Rotation2d getHeading() {
+        return new Rotation2d();
     }
 }
