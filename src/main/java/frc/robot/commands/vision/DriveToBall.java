@@ -69,4 +69,8 @@ public class DriveToBall extends Command {
         return count>10;
         //need to add if sensor detects the ball coming in
     }
+    @Override
+    public void end(boolean interrupted) {
+        drivetrain.drive(new ChassisSpeeds(0,0,0), false);
+    }
 }

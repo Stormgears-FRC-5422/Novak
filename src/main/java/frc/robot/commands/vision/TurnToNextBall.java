@@ -29,6 +29,11 @@ public class TurnToNextBall extends Command {
     }
 
     @Override
+    public void end(boolean interrupted) {
+        drivetrain.percentOutputDrive(new ChassisSpeeds(0,0,0), false);
+    }
+
+    @Override
     public boolean isFinished() {
         return visionSubsystem.getTennisBall().isPresent();
     }
