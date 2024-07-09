@@ -10,6 +10,7 @@ import frc.robot.subsystems.Intake;
 public class IntakeCommand extends Command {
   /** Creates a new Intake. */
   private final Intake intake;
+  private int counter;
 
   public IntakeCommand(Intake intake) {
     this.intake = intake;
@@ -18,14 +19,15 @@ public class IntakeCommand extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    counter = 0;
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (intake != null) {
-      intake.setSpeed(1.0);
-    }
+    intake.setSpeed(1.0);
+    counter++;
   }
 
   // Called once the command ends or is interrupted.
@@ -35,6 +37,6 @@ public class IntakeCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return counter > 5;
   }
 }
