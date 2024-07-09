@@ -37,7 +37,7 @@ public class RobotContainer {
         joystick = SolidworksJoystickFactory.getInstance(ButtonBoard.driveJoystick, ButtonBoard.driveJoystickPort);
         if (Toggles.useVision && Toggles.useDrive) {
             visionSubsystem = new VisionSubsystem(Vision.limelightId);
-            turnToNextBall = new TurnToNextBall(visionSubsystem);
+            turnToNextBall = new TurnToNextBall(drivetrain, visionSubsystem);
             driveToBall = new DriveToBall(drivetrain,visionSubsystem);
         }
         if (Toggles.useIntake) {
