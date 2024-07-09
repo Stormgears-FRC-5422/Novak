@@ -34,5 +34,5 @@ public class SolidworksXboxController extends SolidworksJoystick {
         return controller.getAButtonIsHeld();
     }
 
-
+    public boolean intake() { return controller.getYButtonIsHeld(); }
 }

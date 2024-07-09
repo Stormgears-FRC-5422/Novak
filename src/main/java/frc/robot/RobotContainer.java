@@ -7,21 +7,25 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.vision.DriveToBall;
 import frc.robot.commands.vision.TurnToNextBall;
 import frc.robot.joysticks.IllegalJoystickTypeException;
 import frc.robot.joysticks.SolidworksJoystick;
 import frc.robot.joysticks.SolidworksJoystickFactory;
 import frc.robot.Constants.*;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.VisionSubsystem;
 
 public class RobotContainer {
   //Subsystems
   VisionSubsystem visionSubsystem;
+  Intake intake;
 
   //Commands
   TurnToNextBall turnToNextBall;
   DriveToBall driveToBall;
+  IntakeCommand intakeCommand;
 
   SolidworksJoystick joystick;
   public RobotContainer() throws IllegalJoystickTypeException {
@@ -32,6 +36,10 @@ public class RobotContainer {
         turnToNextBall = new TurnToNextBall(visionSubsystem);
         driveToBall = new DriveToBall(visionSubsystem);
     }
+    if (Toggles.useIntake) {
+      intake = new Intake();
+      intakeCommand = new IntakeCommand(intake);
+    }
     //To implement a trigger, make a function in the following classes: SolidworksJoystick, SolidworksLogitechController, SolidworksXboxController, SolidworksDummyController
   }
 
@@ -39,6 +47,9 @@ public class RobotContainer {
     if (Toggles.useVision && Toggles.useDrive){
       new Trigger(() -> joystick.driveNoteCancel()).whileFalse(new TurnToNextBall(visionSubsystem).andThen(new DriveToBall(visionSubsystem)));
 
+    }
+    if (Toggles.useIntake) {
+      new Trigger(() -> joystick.intake()).onTrue(intakeCommand);
     }
   }
 

@@ -37,5 +37,5 @@ public class SolidworksLogitechController extends SolidworksJoystick {
         return false;
     }
 
-
+    public boolean intake() { return false; }
 }
