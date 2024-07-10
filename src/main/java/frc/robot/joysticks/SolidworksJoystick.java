@@ -11,7 +11,7 @@ public abstract class SolidworksJoystick {
 
     public abstract double getTurbo();
 
-    public abstract boolean driveNoteCancel();
+    public abstract boolean drivetoBall();
 
     public abstract boolean intake();
 }

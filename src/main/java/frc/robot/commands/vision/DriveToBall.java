@@ -3,6 +3,7 @@ package frc.robot.commands.vision;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.RobotState;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.VisionSubsystem;
 import org.littletonrobotics.junction.Logger;
@@ -23,7 +24,7 @@ public class DriveToBall extends Command {
     double rotation = 0;
     double tx;
     double ty;
-
+    RobotState robotState;
 
 
 
@@ -31,6 +32,7 @@ public class DriveToBall extends Command {
     public DriveToBall(Drivetrain drivetrain, VisionSubsystem visionSubsystem) {
         this.visionSubsystem = visionSubsystem;
         this.drivetrain = drivetrain;
+        robotState = RobotState.getInstance();
         addRequirements(visionSubsystem, drivetrain);
     }
 
@@ -46,6 +48,11 @@ public class DriveToBall extends Command {
     public void execute() {
         rotation = 0;
         if (visionSubsystem.getTennisBall().isPresent()) {
+            if (tx > 0) {
+                robotState.setVisionState(RobotState.VisionState.RIGHT);
+            } else if (tx < 0) {
+                robotState.setVisionState(RobotState.VisionState.LEFT);
+            }
             tx = visionSubsystem.getTennisBall().get().tx;
             ty = visionSubsystem.getTennisBall().get().ty;
             movement = translationController.calculate(TARGET - ty);
@@ -54,6 +61,7 @@ public class DriveToBall extends Command {
             count = 0;
         } else {
             count++;
+            robotState.setVisionState(RobotState.VisionState.IDLE);
         }
         System.out.println("Movement: " + movement);
         System.out.println("ROT: " + rotation);
@@ -66,7 +74,7 @@ public class DriveToBall extends Command {
     }
     @Override
     public boolean isFinished() {
-        return count>10;
+        return count>10 || robotState.getShooterHeight() == RobotState.ShooterHeight.HIGH;
         //need to add if sensor detects the ball coming in
     }
     @Override

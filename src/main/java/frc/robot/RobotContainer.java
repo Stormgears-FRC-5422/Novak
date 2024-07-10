@@ -9,8 +9,10 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.JoyStickDrive;
+import frc.robot.commands.vision.AlignToAprilTag;
 import frc.robot.commands.vision.DriveToBall;
 import frc.robot.commands.vision.TurnToNextBall;
+import frc.robot.commands.vision.VisionIdle;
 import frc.robot.joysticks.IllegalJoystickTypeException;
 import frc.robot.joysticks.SolidworksJoystick;
 import frc.robot.joysticks.SolidworksJoystickFactory;
@@ -27,7 +29,10 @@ public class RobotContainer {
   //Commands
   TurnToNextBall turnToNextBall;
   DriveToBall driveToBall;
+  VisionIdle visionIdle;
+  AlignToAprilTag alignToAprilTag;
   IntakeCommand intakeCommand;
+
 
   SolidworksJoystick joystick;
   public RobotContainer() throws IllegalJoystickTypeException {
@@ -52,7 +57,9 @@ public class RobotContainer {
     }
     if (Toggles.useVision) {
       visionSubsystem = new VisionSubsystem(Vision.limelightId);
+        visionIdle = new VisionIdle(visionSubsystem);
       if (Toggles.useDrive) {
+        alignToAprilTag = new AlignToAprilTag(drivetrain, visionSubsystem);
         turnToNextBall = new TurnToNextBall(drivetrain, visionSubsystem);
         driveToBall = new DriveToBall(drivetrain, visionSubsystem);
       }
@@ -61,8 +68,12 @@ public class RobotContainer {
     configureBindings();
   }
   private void configureBindings() {
+    if (Toggles.useVision) {
+      visionSubsystem.setDefaultCommand(visionIdle);
+    }
+
     if (Toggles.useVision && Toggles.useDrive){
-      new Trigger(() -> joystick.driveNoteCancel()).whileFalse(turnToNextBall.andThen(driveToBall));
+      new Trigger(() -> joystick.drivetoBall()).whileTrue(turnToNextBall.andThen(driveToBall));
 
     }
     if (Toggles.useIntake) {
