@@ -20,20 +20,20 @@ public class IntakeCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    intake.setIntakeState(Intake.IntakeState.FORWARD);
     counter = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.setSpeed(1.0);
     counter++;
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.setSpeed(0.0);
+    intake.setIntakeState(Intake.IntakeState.OFF);
   }
 
   // Returns true when the command should end.

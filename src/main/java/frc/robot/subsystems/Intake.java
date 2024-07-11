@@ -7,23 +7,52 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkLowLevel;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
+import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
+  public enum IntakeState {
+    OFF,
+    FORWARD,
+    REVERSE,
+  }
+
   private final CANSparkMax intakeMotor;
+  private double intakeMotorSpeed;
+  private IntakeState intakeState;
+  private double intakeSpeed;
 
   /** Creates a new Intake. */
   public Intake() {
     // used fake id, change to real motor id later
     intakeMotor = new CANSparkMax(3, CANSparkLowLevel.MotorType.kBrushless);
+    setIntakeState(IntakeState.OFF);
+  }
+
+  public void setSpeed(double speed) {
+    intakeMotorSpeed = speed;
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    intakeMotor.set(intakeMotorSpeed);
   }
 
-  public void setSpeed(double speed) {
-    intakeMotor.set(speed);
+  public void setIntakeState(IntakeState state) {
+    this.intakeState = state;
+    switch (state) {
+      case OFF -> {
+        setSpeed(0.0);
+      }
+      case FORWARD -> {
+        setSpeed(Constants.Intake.intakeSpeed);
+      }
+      case REVERSE ->{
+        setSpeed(Constants.Intake.intakeSpeed * -1);
+      }
+    }
   }
+
+
 
 }

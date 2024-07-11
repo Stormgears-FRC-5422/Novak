@@ -29,7 +29,6 @@ public class RobotContainer {
 
   SolidworksJoystick joystick;
   public RobotContainer() throws IllegalJoystickTypeException {
-    configureBindings();
     joystick = SolidworksJoystickFactory.getInstance(ButtonBoard.driveJoystick,ButtonBoard.driveJoystickPort);
     if (Toggles.useVision) {
         visionSubsystem = new VisionSubsystem(Vision.limelightId);
@@ -40,6 +39,7 @@ public class RobotContainer {
       intake = new Intake();
       intakeCommand = new IntakeCommand(intake);
     }
+    configureBindings();
     //To implement a trigger, make a function in the following classes: SolidworksJoystick, SolidworksLogitechController, SolidworksXboxController, SolidworksDummyController
   }
 
