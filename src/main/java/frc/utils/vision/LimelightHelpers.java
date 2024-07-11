@@ -1,12 +1,10 @@
 //LimelightHelpers v1.7 (May 9, 2024) (REQUIRES 2024.6)
 
-package frc.utils;
+package frc.utils.vision;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import frc.utils.LimelightHelpers.LimelightResults;
-import frc.utils.LimelightHelpers.PoseEstimate;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;

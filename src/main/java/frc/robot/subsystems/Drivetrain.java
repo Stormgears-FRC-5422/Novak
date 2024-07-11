@@ -14,7 +14,7 @@ import frc.utils.swerve.SwerveModule;
 
 public class Drivetrain extends SubsystemBase {
 
-    RobotState robotState = new RobotState();
+    RobotState robotState = RobotState.getInstance();
 
     private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
             // Front left

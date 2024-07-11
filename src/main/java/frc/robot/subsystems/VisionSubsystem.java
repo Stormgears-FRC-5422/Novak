@@ -1,12 +1,13 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotState;
-import frc.utils.LimelightHelpers;
+import frc.utils.vision.LimelightHelpers;
 
 import java.util.Optional;
 
-import static frc.utils.LimelightHelpers.getLatestResults;
+import static frc.utils.vision.LimelightHelpers.getLatestResults;
 
 public class VisionSubsystem extends SubsystemBase {
     RobotState robotState;
@@ -17,6 +18,7 @@ public class VisionSubsystem extends SubsystemBase {
         LimelightHelpers.setLEDMode_ForceBlink("");
         this.limelight = limelight;
     }
+    //optionally returns Detector results or a null if no results
     public Optional<LimelightHelpers.LimelightTarget_Detector> getTennisBall(){
         var results = getLatestResults(limelight);
         if (results != null && results.valid && results.targets_Detector.length > 0 ) {
@@ -24,7 +26,8 @@ public class VisionSubsystem extends SubsystemBase {
         }
         return Optional.empty();
     }
-    public Optional<LimelightHelpers.LimelightTarget_Fiducial> getAprilTags(){
+    //optionally returns AprilTag results
+    public Optional<LimelightHelpers.LimelightTarget_Fiducial> getAprilTag(){
         var results = getLatestResults(limelight);
         if (results != null && results.valid && results.targets_Fiducials.length > 0) {
             return Optional.of(results.targets_Fiducials[0]);
@@ -52,5 +55,18 @@ public class VisionSubsystem extends SubsystemBase {
         robotState.setIsBallDetected(false);
         return false;
     }
+    public Optional<LimelightHelpers.LimelightTarget_Fiducial[]> getAprilTags(){
+        var results = getLatestResults(limelight);
+        if (results != null && results.valid && results.targets_Fiducials.length > 0) {
+            return Optional.of(results.targets_Fiducials);
+        }
+        return Optional.empty();
+    }
+    public Optional<Pose3d> getBotPose_TargetSpace(){
+        Pose3d botPose3dTargetSpace = LimelightHelpers.getBotPose3d_TargetSpace(limelight);
+        return Optional.of(botPose3dTargetSpace);
+
+    }
+
 
 }

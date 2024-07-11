@@ -33,7 +33,7 @@ public class SolidworksLogitechController extends SolidworksJoystick {
     }
 
     @Override
-    public boolean driveNoteCancel() {
+    public boolean drivetoBall() {
         return false;
     }
 

@@ -8,44 +8,81 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.JoyStickDrive;
+import frc.robot.commands.vision.AlignToAprilTag;
 import frc.robot.commands.vision.DriveToBall;
 import frc.robot.commands.vision.TurnToNextBall;
+import frc.robot.commands.vision.VisionIdle;
 import frc.robot.joysticks.IllegalJoystickTypeException;
 import frc.robot.joysticks.SolidworksJoystick;
 import frc.robot.joysticks.SolidworksJoystickFactory;
 import frc.robot.Constants.*;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.VisionSubsystem;
 
 public class RobotContainer {
-  //Subsystems
   VisionSubsystem visionSubsystem;
   Intake intake;
+  Drivetrain drivetrain;
 
   //Commands
   TurnToNextBall turnToNextBall;
   DriveToBall driveToBall;
+  VisionIdle visionIdle;
+  AlignToAprilTag alignToAprilTag;
   IntakeCommand intakeCommand;
+
 
   SolidworksJoystick joystick;
   public RobotContainer() throws IllegalJoystickTypeException {
     joystick = SolidworksJoystickFactory.getInstance(ButtonBoard.driveJoystick,ButtonBoard.driveJoystickPort);
     if (Toggles.useVision) {
         visionSubsystem = new VisionSubsystem(Vision.limelightId);
-        turnToNextBall = new TurnToNextBall(visionSubsystem);
-        driveToBall = new DriveToBall(visionSubsystem);
+        turnToNextBall = new TurnToNextBall(drivetrain, visionSubsystem);
+        driveToBall = new DriveToBall(drivetrain, visionSubsystem);
     }
+
+    joystick = SolidworksJoystickFactory.getInstance(ButtonBoard.driveJoystick, ButtonBoard.driveJoystickPort);
+
     if (Toggles.useIntake) {
       intake = new Intake();
       intakeCommand = new IntakeCommand(intake);
     }
     configureBindings();
     //To implement a trigger, make a function in the following classes: SolidworksJoystick, SolidworksLogitechController, SolidworksXboxController, SolidworksDummyController
-  }
 
+    if (Toggles.useDrive) {
+      System.out.println("Create drive type " + Drive.driveType);
+      drivetrain = new Drivetrain();
+      if (Toggles.useController) {
+        System.out.println("Making 1st joystick!");
+
+        joystick = SolidworksJoystickFactory.getInstance(ButtonBoard.driveJoystick, ButtonBoard.driveJoystickPort);
+        JoyStickDrive driveWithJoystick = new JoyStickDrive(drivetrain, joystick);
+        drivetrain.setDefaultCommand(driveWithJoystick);
+      }
+
+    }
+    if (Toggles.useVision) {
+      visionSubsystem = new VisionSubsystem(Vision.limelightId);
+        visionIdle = new VisionIdle(visionSubsystem);
+      if (Toggles.useDrive) {
+        alignToAprilTag = new AlignToAprilTag(drivetrain, visionSubsystem);
+        turnToNextBall = new TurnToNextBall(drivetrain, visionSubsystem);
+        driveToBall = new DriveToBall(drivetrain, visionSubsystem);
+      }
+
+    }
+    configureBindings();
+  }
   private void configureBindings() {
+    if (Toggles.useVision) {
+      visionSubsystem.setDefaultCommand(visionIdle);
+    }
+
     if (Toggles.useVision && Toggles.useDrive){
-      new Trigger(() -> joystick.driveNoteCancel()).whileFalse(new TurnToNextBall(visionSubsystem).andThen(new DriveToBall(visionSubsystem)));
+      new Trigger(() -> joystick.drivetoBall()).whileTrue(turnToNextBall.andThen(driveToBall));
 
     }
     if (Toggles.useIntake) {
