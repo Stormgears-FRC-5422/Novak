@@ -52,6 +52,10 @@ public class LimelightExtra {
         table.getEntry("w").setNumber(w);
         table.getEntry("h").setNumber(h);
     }
+    public void changePipeline(int pipeline, String limelight) { //Changes the pipeline of the limelight
+        NetworkTable table = NetworkTableInstance.getDefault().getTable(limelight);
+        table.getEntry("pipeline").setNumber(pipeline);
+    }
 
 
 }
