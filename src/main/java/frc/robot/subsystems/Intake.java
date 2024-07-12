@@ -19,12 +19,11 @@ public class Intake extends SubsystemBase {
   private final CANSparkMax intakeMotor;
   private double intakeMotorSpeed;
   private IntakeState intakeState;
-  private double intakeSpeed;
 
   /** Creates a new Intake. */
   public Intake() {
     // used fake id, change to real motor id later
-    intakeMotor = new CANSparkMax(3, CANSparkLowLevel.MotorType.kBrushless);
+    intakeMotor = new CANSparkMax(Constants.Intake.intakeID, CANSparkLowLevel.MotorType.kBrushless);
     setIntakeState(IntakeState.OFF);
   }
 
