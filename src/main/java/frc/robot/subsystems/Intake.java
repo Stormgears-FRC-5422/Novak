@@ -35,6 +35,7 @@ public class Intake extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     intakeMotor.set(intakeMotorSpeed);
+
   }
 
   public void setIntakeState(IntakeState state) {

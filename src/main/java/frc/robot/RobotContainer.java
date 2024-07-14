@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.ADIS16448_IMU;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -19,12 +20,14 @@ import frc.robot.joysticks.SolidworksJoystickFactory;
 import frc.robot.Constants.*;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Pigeon;
 import frc.robot.subsystems.VisionSubsystem;
 
 public class RobotContainer {
   VisionSubsystem visionSubsystem;
   Intake intake;
   Drivetrain drivetrain;
+  Pigeon pigeon;
 
   //Commands
   TurnToNextBall turnToNextBall;
@@ -64,6 +67,9 @@ public class RobotContainer {
       }
 
     }
+    if (Toggles.usePigeon){
+      pigeon = new Pigeon();
+    }
     if (Toggles.useVision) {
       visionSubsystem = new VisionSubsystem(Vision.limelightId);
         visionIdle = new VisionIdle(visionSubsystem);
@@ -83,7 +89,6 @@ public class RobotContainer {
 
     if (Toggles.useVision && Toggles.useDrive){
       new Trigger(() -> joystick.drivetoBall()).whileTrue(turnToNextBall.andThen(driveToBall));
-
     }
     if (Toggles.useIntake) {
       new Trigger(() -> joystick.intake()).onTrue(intakeCommand);
