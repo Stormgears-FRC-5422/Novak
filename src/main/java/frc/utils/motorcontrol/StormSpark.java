@@ -9,7 +9,7 @@ import static frc.robot.Constants.*;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
-public class StormSpark extends CANSparkMax {
+public class StormSpark extends CANSparkMax implements MotorController {
   private static final double temperatureRampThreshold = SparkMax.TemperatureRampThreshold;
   private static final double temperatureRampLimit = SparkMax.TemperatureRampLimit;
   private final MotorKind motorKind;
@@ -54,11 +54,10 @@ public class StormSpark extends CANSparkMax {
     }
   }
 
-  @Override
   // We should probably have a way to coordinate this ramp among multiple motors
   // The drive class already does this for its set speed, but the robot will pull left or right if
   // left and right motors are getting different results in this method.
-  public void set(double speed) {
+  public void setVelocity(double speed) {
     // if the temperature is too high, start ramping down.
     // reduce speed to 0 at temperatureRampLimit
     // start ramping down at temperatureRampThreshold
@@ -79,6 +78,33 @@ public class StormSpark extends CANSparkMax {
 
     super.set(scale * speed);
   }
+
+  @Override
+  public void setAngle(double angle) {
+    this.setAngle(angle);
+  }
+
+  @Override
+  public void restoretoFactoryDefaults() {
+  }
+
+  @Override
+  public void setMotorPosition(double position) {
+//    this.set(position);
+  }
+
+  @Override
+  public void applyConfig() {
+      this.getPIDController().setP(1.0005);
+        this.getPIDController().setI(0.00);
+        this.getPIDController().setD(0.0004);
+  }
+
+  @Override
+  public void getAnglePosition() {
+      this.getEncoder().getPosition();
+  }
+
 
   // Should be between 0.0 and 1.0 - to account for oddities in the drive train
   // e.g. two different gear ratios

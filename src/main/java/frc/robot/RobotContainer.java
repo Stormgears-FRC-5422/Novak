@@ -18,7 +18,7 @@ import frc.robot.joysticks.IllegalJoystickTypeException;
 import frc.robot.joysticks.SolidworksJoystick;
 import frc.robot.joysticks.SolidworksJoystickFactory;
 import frc.robot.Constants.*;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.*;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pigeon;
 import frc.robot.subsystems.VisionSubsystem;
@@ -26,8 +26,8 @@ import frc.robot.subsystems.VisionSubsystem;
 public class RobotContainer {
   VisionSubsystem visionSubsystem;
   Intake intake;
-  Drivetrain drivetrain;
   Pigeon pigeon;
+  DrivetrainBase drivetrain;
 
   //Commands
   TurnToNextBall turnToNextBall;
@@ -38,7 +38,7 @@ public class RobotContainer {
 
 
   SolidworksJoystick joystick;
-  public RobotContainer() throws IllegalJoystickTypeException {
+  public RobotContainer() throws IllegalJoystickTypeException, IllegalDriveTypeException {
     joystick = SolidworksJoystickFactory.getInstance(ButtonBoard.driveJoystick,ButtonBoard.driveJoystickPort);
     if (Toggles.useVision) {
         visionSubsystem = new VisionSubsystem(Vision.limelightId);
@@ -56,8 +56,9 @@ public class RobotContainer {
     //To implement a trigger, make a function in the following classes: SolidworksJoystick, SolidworksLogitechController, SolidworksXboxController, SolidworksDummyController
 
     if (Toggles.useDrive) {
+      drivetrain = DrivetrainFactory.getInstance(Drive.driveType);
       System.out.println("Create drive type " + Drive.driveType);
-      drivetrain = new Drivetrain();
+
       if (Toggles.useController) {
         System.out.println("Making 1st joystick!");
 

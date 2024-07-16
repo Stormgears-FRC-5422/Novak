@@ -5,6 +5,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotState;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.DrivetrainBase;
 import frc.robot.subsystems.VisionSubsystem;
 import org.littletonrobotics.junction.Logger;
 import frc.robot.Constants;
@@ -18,7 +19,7 @@ public class DriveToBall extends Command {
             Constants.DriveToBall.rotationKi, Constants.DriveToBall.rotationKd);
     //keeping values same for now but will change with testing
 
-    Drivetrain drivetrain;
+    DrivetrainBase drivetrain;
     int count = 0;
     double movement = 0;
     double rotation = 0;
@@ -29,7 +30,7 @@ public class DriveToBall extends Command {
 
 
 
-    public DriveToBall(Drivetrain drivetrain, VisionSubsystem visionSubsystem) {
+    public DriveToBall(DrivetrainBase drivetrain, VisionSubsystem visionSubsystem) {
         this.visionSubsystem = visionSubsystem;
         this.drivetrain = drivetrain;
         robotState = RobotState.getInstance();

@@ -8,12 +8,13 @@ import frc.robot.Constants.ButtonBoard;
 import frc.robot.RobotState;
 import frc.robot.joysticks.SolidworksJoystick;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.DrivetrainBase;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 public class JoyStickDrive extends Command {
-    private Drivetrain drivetrain;
+    private DrivetrainBase drivetrain;
     private final DoubleSupplier txSupplier;
     private final DoubleSupplier tySupplier;
     private final DoubleSupplier omegaSupplier;
@@ -26,7 +27,7 @@ public class JoyStickDrive extends Command {
     private final SlewRateLimiter speedScaleLimiter = new SlewRateLimiter(0.5);
 
 
-    public JoyStickDrive(Drivetrain drivetrain,
+    public JoyStickDrive(DrivetrainBase drivetrain,
                          SolidworksJoystick joystick) {
         this.drivetrain = drivetrain;
         m_state = RobotState.getInstance();

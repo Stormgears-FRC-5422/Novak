@@ -5,11 +5,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.RobotState;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.DrivetrainBase;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.utils.vision.LimelightHelpers;
 
 public class AlignToAprilTag extends Command {
-    Drivetrain drivetrain;
+    DrivetrainBase drivetrain;
     VisionSubsystem visionSubsystem;
     double visibleAprilTags;
 
@@ -23,7 +24,7 @@ public class AlignToAprilTag extends Command {
     double vy;
     double counter;
 
-    public AlignToAprilTag(Drivetrain drivetrain, VisionSubsystem visionSubsystem) {
+    public AlignToAprilTag(DrivetrainBase drivetrain, VisionSubsystem visionSubsystem) {
         this.drivetrain = drivetrain;
         this.visionSubsystem = visionSubsystem;
         this.robotState = RobotState.getInstance();
