@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.JoyStickDrive;
+import frc.robot.commands.PigeonCommand;
 import frc.robot.commands.vision.AlignToAprilTag;
 import frc.robot.commands.vision.DriveToBall;
 import frc.robot.commands.vision.TurnToNextBall;
@@ -70,7 +71,9 @@ public class RobotContainer {
     }
     if (Toggles.usePigeon){
       pigeon = new Pigeon();
+      pigeon.setDefaultCommand(new PigeonCommand(pigeon));
     }
+
     if (Toggles.useVision) {
       visionSubsystem = new VisionSubsystem(Vision.limelightId);
         visionIdle = new VisionIdle(visionSubsystem);

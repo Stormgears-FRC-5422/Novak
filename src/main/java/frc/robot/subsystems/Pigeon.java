@@ -13,6 +13,10 @@ public class Pigeon extends SubsystemBase {
         return pigeon.getYaw().getValue();
     }
 
+    public void pigeonReset(){
+        pigeon.reset();
+    }
+
     @Override
     public void periodic() {
         super.periodic();
