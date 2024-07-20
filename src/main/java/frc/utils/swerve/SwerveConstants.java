@@ -15,9 +15,11 @@ public final class SwerveConstants {
     public static final CANcoder mBackLeftCancoder = new CANcoder(3);
     public static final CANcoder mBackRightCancoder = new CANcoder(4);
 
+    public static final double angleGearRatio = (1 / 6.75);
+
+
     public static TalonFXConfiguration DriveFXConfig() {
         TalonFXConfiguration config = new TalonFXConfiguration();
-
         config.Slot0.kP = 0.030 * 12.0;
         config.Slot0.kI = 0.0;
         config.Slot0.kD = 0.000001 * 12.0;
@@ -44,9 +46,9 @@ public final class SwerveConstants {
     public static TalonFXConfiguration AngleFXConfig() {
         TalonFXConfiguration config = new TalonFXConfiguration();
 
-        config.Slot0.kP = 1.0005;
+        config.Slot0.kP = 0.1;
         config.Slot0.kI = 0.0;
-        config.Slot0.kD = 0.0004;
+        config.Slot0.kD = 0.0000;
         config.Slot0.kS = 0.0;
         config.Slot0.kV = 0.0;
 

@@ -1,10 +1,8 @@
 package frc.utils.swerve;
 
+import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.ControlRequest;
-import com.ctre.phoenix6.controls.NeutralOut;
-import com.ctre.phoenix6.controls.PositionDutyCycle;
-import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.controls.*;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -14,6 +12,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix6.hardware.TalonFX;
 import frc.robot.Constants;
 import frc.utils.Conversions;
+import org.littletonrobotics.junction.AutoLogOutput;
+import org.littletonrobotics.junction.Logger;
+
 import static frc.utils.Conversions.MPSToRPS;
 
 
@@ -24,7 +25,7 @@ public class SwerveModule extends SubsystemBase {
     private TalonFX angleMotor;
     private TalonFX driveMotor;
     private CANcoder angleEncoder;
-
+    @AutoLogOutput
     private double targetAngle;
     private double targetVelocity;
 
@@ -45,8 +46,8 @@ public class SwerveModule extends SubsystemBase {
         angleMotor = new TalonFX(moduleConstants.angleMotorID);
         driveMotor = new TalonFX(moduleConstants.driveMotorID);
 
-        angleMotor.getConfigurator().apply(SwerveConstants.AngleFXConfig(), Constants.Drive.CANTimeoutMs);
-        driveMotor.getConfigurator().apply(SwerveConstants.DriveFXConfig(), Constants.Drive.CANTimeoutMs);
+        angleMotor.getConfigurator().apply(SwerveConstants.AngleFXConfig());
+        driveMotor.getConfigurator().apply(SwerveConstants.DriveFXConfig());
 
         driveMotor.setPosition(0);
 
@@ -56,21 +57,49 @@ public class SwerveModule extends SubsystemBase {
 
 
     public void resetToAbsolute() {
-//        need to check if this is the right way to do this
-        angleEncoder.getAbsolutePosition().waitForUpdate(Constants.Drive.CANTimeoutMs);
-        angleMotor.setPosition(getAbsolutePosition() - angleOffset / 360, Constants.Drive.CANTimeoutMs);
+        double angle = placeInAppropriate0To360Scope(getCurrentDegrees(), getAbsolutePosition() - angleOffset);
+        double absPosition = Conversions.degreesToRotation(angle, Constants.Drive.angleGearRatio);
+        angleMotor.setPosition(absPosition);
     }
 
+    @AutoLogOutput(key = "Module {moduleNumber}/absolute angle")
     public double getAbsolutePosition() {
         return angleEncoder.getAbsolutePosition().getValue() * 360;
     }
 
+    private double placeInAppropriate0To360Scope(double scopeReference, double newAngle) {
+        double lowerBound;
+        double upperBound;
+        double lowerOffset = scopeReference % 360;
+        if (lowerOffset >= 0) {
+            lowerBound = scopeReference - lowerOffset;
+            upperBound = scopeReference + (360 - lowerOffset);
+        } else {
+            upperBound = scopeReference - lowerOffset;
+            lowerBound = scopeReference - (360 + lowerOffset);
+        }
+        while (newAngle < lowerBound) {
+            newAngle += 360;
+        }
+        while (newAngle > upperBound) {
+            newAngle -= 360;
+        }
+        if (newAngle - scopeReference > 180) {
+            newAngle -= 360;
+        } else if (newAngle - scopeReference < -180) {
+            newAngle += 360;
+        }
+        return newAngle;
+    }
+    @AutoLogOutput(key = "Module {moduleNumber}/angle")
     public double getCurrentDegrees() {
-        return angleMotor.getRotorPosition().getValue() * 360;
+        return Conversions.rotationsToDegrees(angleMotor.getRotorPosition().getValue(), Constants.Drive.angleGearRatio);
     }
 
     public void setVelocity(SwerveModuleState desiredState) {
+        Logger.recordOutput("Module" + moduleNumber + " desired angle", desiredState.angle.getDegrees());
         double flip = setSteeringAngleOptimized(desiredState.angle) ? -1 : 1;
+        setSteeringAngleRaw(desiredState.angle.getDegrees());
         targetVelocity = desiredState.speedMetersPerSecond * flip;
         double rotorSpeed = MPSToRPS(
                 targetVelocity,
@@ -85,6 +114,7 @@ public class SwerveModule extends SubsystemBase {
     }
 
     private boolean setSteeringAngleOptimized(Rotation2d steerAngle) {
+//        System.out.println(steerAngle.getDegrees());
         boolean flip = false;
         final double targetClamped = steerAngle.getDegrees();
         final double angleUnclamped = getCurrentDegrees();
@@ -104,11 +134,22 @@ public class SwerveModule extends SubsystemBase {
         return flip;
     }
 
-    private void setSteeringAngleRaw(double angleDegrees) {
-        double rotorPosition = angleDegrees / 360;
-        rotationDemand = new PositionDutyCycle(rotorPosition, 0.0, true, 0.0, 0, false, false, false);
-    }
+//    private boolean flipHeading(Rotation2d prevToGoal) {
+//        return Math.abs(prevToGoal.getRadians()) > Math.PI / 2.0;
+//    }
 
+
+    private void setSteeringAngleRaw(double angleDegrees) {
+//        System.out.println(angleDegrees);
+        double rotorPosition = Conversions.degreesToRotation(angleDegrees, Constants.Drive.angleGearRatio);
+
+//        System.out.println(rotorPosition);
+//        PositionVoltage positionVoltage = new PositionVoltage(rotorPosition);
+        rotationDemand = new PositionDutyCycle(rotorPosition, 0.0, false, 0.0, 0, false, false, false);
+//        rotationDemand = positionVoltage;
+//        rotationDemand = new PositionDutyCycle(angleDegrees, 0.0, false, 0.0, 0, false, false, false);
+    }
+    @AutoLogOutput(key = "Module {moduleNumber}/velocity")
     private double getCurrentVelocity() {
         return Conversions.RPSToMPS(
                 driveVelocity,
@@ -152,8 +193,11 @@ public class SwerveModule extends SubsystemBase {
         rotationVelocity = angleMotor.getRotorVelocity().getValue();
         driveVelocity = driveMotor.getRotorVelocity().getValue();
 
+//        Logger.recordOutput("Module" + moduleNumber + " rotor position", rotorPosition);
+
 
         angleMotor.setControl(rotationDemand);
+//        angleMotor.setPosition()
         driveMotor.setControl(driveDemand);
     }
 

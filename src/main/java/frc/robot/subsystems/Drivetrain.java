@@ -11,6 +11,7 @@ import frc.robot.Constants;
 import frc.robot.RobotState;
 import frc.utils.swerve.SwerveConstants;
 import frc.utils.swerve.SwerveModule;
+import org.littletonrobotics.junction.AutoLogOutput;
 
 public class Drivetrain extends DrivetrainBase {
 
@@ -34,11 +35,11 @@ public class Drivetrain extends DrivetrainBase {
 
 
     double maxVelocityMetersPerSecond = Constants.Drive.FreeSpeedRPM / 60.0 *
-            Constants.Drive.wheelDiameter * Math.PI;
+            Constants.Drive.driveReduction * Constants.Drive.wheelDiameter * Math.PI;
     double maxAngularVelocityRadiansPerSecond = maxVelocityMetersPerSecond /
             Math.hypot(Constants.Drive.drivetrainTrackwidthMeters / 2.0, Constants.Drive.drivetrainWheelbaseMeters / 2.0);
 
-
+    @AutoLogOutput
     SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
 
 
@@ -59,7 +60,9 @@ public class Drivetrain extends DrivetrainBase {
 
     @Override
     public void periodic() {
+
         states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
+//        System.out.println(states[0].angle.getDegrees());
 
         m_frontLeftModule.setVelocity(states[0]);
         m_frontRightModule.setVelocity(states[1]);

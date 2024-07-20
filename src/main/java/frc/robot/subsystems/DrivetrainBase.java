@@ -6,6 +6,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotState;
+import org.littletonrobotics.junction.Logger;
 
 public abstract class DrivetrainBase extends SubsystemBase {
     private double m_driveSpeedScale = 1;
@@ -64,6 +65,9 @@ public abstract class DrivetrainBase extends SubsystemBase {
      * @param fieldRelative True for field relative driving
      */
     public void percentOutputDrive(ChassisSpeeds speeds, boolean fieldRelative) {
+        Logger.recordOutput("joystick output chassis y", speeds.vyMetersPerSecond);
+        Logger.recordOutput("joystick output chassis x", speeds.vxMetersPerSecond);
+        Logger.recordOutput("joystick output chassis a", speeds.omegaRadiansPerSecond);
         drive(new ChassisSpeeds(speeds.vxMetersPerSecond * m_maxVelocityMetersPerSecond,
                         speeds.vyMetersPerSecond * m_maxVelocityMetersPerSecond,
                         speeds.omegaRadiansPerSecond * m_maxAngularVelocityRadiansPerSecond),

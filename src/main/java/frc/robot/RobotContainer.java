@@ -25,81 +25,83 @@ import frc.robot.subsystems.Pigeon;
 import frc.robot.subsystems.VisionSubsystem;
 
 public class RobotContainer {
-  VisionSubsystem visionSubsystem;
-  Intake intake;
-  Pigeon pigeon;
-  DrivetrainBase drivetrain;
+    VisionSubsystem visionSubsystem;
+    Intake intake;
+    Pigeon pigeon;
+    DrivetrainBase drivetrain;
 
-  //Commands
-  TurnToNextBall turnToNextBall;
-  DriveToBall driveToBall;
-  VisionIdle visionIdle;
-  AlignToAprilTag alignToAprilTag;
-  IntakeCommand intakeCommand;
+    //Commands
+    TurnToNextBall turnToNextBall;
+    DriveToBall driveToBall;
+    VisionIdle visionIdle;
+    AlignToAprilTag alignToAprilTag;
+    IntakeCommand intakeCommand;
 
 
-  SolidworksJoystick joystick;
-  public RobotContainer() throws IllegalJoystickTypeException, IllegalDriveTypeException {
-    joystick = SolidworksJoystickFactory.getInstance(ButtonBoard.driveJoystick,ButtonBoard.driveJoystickPort);
-    if (Toggles.useVision) {
-        visionSubsystem = new VisionSubsystem(Vision.limelightId);
-        turnToNextBall = new TurnToNextBall(drivetrain, visionSubsystem);
-        driveToBall = new DriveToBall(drivetrain, visionSubsystem);
-    }
+    SolidworksJoystick joystick;
 
-    joystick = SolidworksJoystickFactory.getInstance(ButtonBoard.driveJoystick, ButtonBoard.driveJoystickPort);
+    public RobotContainer() throws IllegalJoystickTypeException, IllegalDriveTypeException {
+        if (Toggles.useDrive) {
+            drivetrain = DrivetrainFactory.getInstance(Drive.driveType);
+            System.out.println("Create drive type " + Drive.driveType);
 
-    if (Toggles.useIntake) {
-      intake = new Intake();
-      intakeCommand = new IntakeCommand(intake);
-    }
-    configureBindings();
-    //To implement a trigger, make a function in the following classes: SolidworksJoystick, SolidworksLogitechController, SolidworksXboxController, SolidworksDummyController
+            if (Toggles.useController) {
+                System.out.println("Making 1st joystick!");
 
-    if (Toggles.useDrive) {
-      drivetrain = DrivetrainFactory.getInstance(Drive.driveType);
-      System.out.println("Create drive type " + Drive.driveType);
+                joystick = SolidworksJoystickFactory.getInstance(ButtonBoard.driveJoystick, ButtonBoard.driveJoystickPort);
+                JoyStickDrive driveWithJoystick = new JoyStickDrive(drivetrain, joystick);
+                drivetrain.setDefaultCommand(driveWithJoystick);
+            }
 
-      if (Toggles.useController) {
-        System.out.println("Making 1st joystick!");
+        }
+        if (Toggles.useVision) {
+            visionSubsystem = new VisionSubsystem(Vision.limelightId);
+            turnToNextBall = new TurnToNextBall(drivetrain, visionSubsystem);
+            driveToBall = new DriveToBall(drivetrain, visionSubsystem);
+        }
 
         joystick = SolidworksJoystickFactory.getInstance(ButtonBoard.driveJoystick, ButtonBoard.driveJoystickPort);
-        JoyStickDrive driveWithJoystick = new JoyStickDrive(drivetrain, joystick);
-        drivetrain.setDefaultCommand(driveWithJoystick);
-      }
 
-    }
-    if (Toggles.usePigeon){
-      pigeon = new Pigeon();
-      pigeon.setDefaultCommand(new PigeonCommand(pigeon));
+        if (Toggles.useIntake) {
+            intake = new Intake();
+            intakeCommand = new IntakeCommand(intake);
+        }
+        configureBindings();
+        //To implement a trigger, make a function in the following classes: SolidworksJoystick, SolidworksLogitechController, SolidworksXboxController, SolidworksDummyController
+
+
+        if (Toggles.usePigeon) {
+            pigeon = new Pigeon();
+            pigeon.setDefaultCommand(new PigeonCommand(pigeon));
+        }
+
+        if (Toggles.useVision) {
+            visionSubsystem = new VisionSubsystem(Vision.limelightId);
+            visionIdle = new VisionIdle(visionSubsystem);
+            if (Toggles.useDrive) {
+                alignToAprilTag = new AlignToAprilTag(drivetrain, visionSubsystem);
+                turnToNextBall = new TurnToNextBall(drivetrain, visionSubsystem);
+                driveToBall = new DriveToBall(drivetrain, visionSubsystem);
+            }
+
+        }
+        configureBindings();
     }
 
-    if (Toggles.useVision) {
-      visionSubsystem = new VisionSubsystem(Vision.limelightId);
-        visionIdle = new VisionIdle(visionSubsystem);
-      if (Toggles.useDrive) {
-        alignToAprilTag = new AlignToAprilTag(drivetrain, visionSubsystem);
-        turnToNextBall = new TurnToNextBall(drivetrain, visionSubsystem);
-        driveToBall = new DriveToBall(drivetrain, visionSubsystem);
-      }
+    private void configureBindings() {
+        if (Toggles.useVision) {
+            visionSubsystem.setDefaultCommand(visionIdle);
+        }
 
-    }
-    configureBindings();
-  }
-  private void configureBindings() {
-    if (Toggles.useVision) {
-      visionSubsystem.setDefaultCommand(visionIdle);
+        if (Toggles.useVision && Toggles.useDrive) {
+            new Trigger(() -> joystick.drivetoBall()).whileTrue(turnToNextBall.andThen(driveToBall));
+        }
+        if (Toggles.useIntake) {
+            new Trigger(() -> joystick.intake()).onTrue(intakeCommand);
+        }
     }
 
-    if (Toggles.useVision && Toggles.useDrive){
-      new Trigger(() -> joystick.drivetoBall()).whileTrue(turnToNextBall.andThen(driveToBall));
+    public Command getAutonomousCommand() {
+        return Commands.print("No autonomous command configured");
     }
-    if (Toggles.useIntake) {
-      new Trigger(() -> joystick.intake()).onTrue(intakeCommand);
-    }
-  }
-
-  public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
-  }
 }

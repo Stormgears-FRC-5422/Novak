@@ -9,14 +9,20 @@ import frc.robot.RobotState;
 import frc.robot.joysticks.SolidworksJoystick;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.DrivetrainBase;
+import frc.utils.LoggerWrapper;
+import org.littletonrobotics.junction.AutoLogOutput;
+import org.littletonrobotics.junction.Logger;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 public class JoyStickDrive extends Command {
     private DrivetrainBase drivetrain;
+    @AutoLogOutput
     private final DoubleSupplier txSupplier;
+    @AutoLogOutput
     private final DoubleSupplier tySupplier;
+    @AutoLogOutput
     private final DoubleSupplier omegaSupplier;
     private final BooleanSupplier robotRelativeSupplier;
     private final DoubleSupplier turboSupplier;
@@ -45,7 +51,6 @@ public class JoyStickDrive extends Command {
 
     @Override
     public void initialize() {
-
     }
 
     @Override
@@ -75,6 +80,9 @@ public class JoyStickDrive extends Command {
         double x = txSupplier.getAsDouble();
         double y = tySupplier.getAsDouble();
         double omega = omegaSupplier.getAsDouble();
+        Logger.recordOutput("X", x);
+        Logger.recordOutput("Y", y);
+        Logger.recordOutput("omega", omega);
 
         //System.out.println("X: " + x + " Y: " + y + "Omega: " + omega);
 
@@ -91,6 +99,11 @@ public class JoyStickDrive extends Command {
 //                speedScaleLimiter.calculate(omega));
         }
 
+//        System.out.println(speeds.vxMetersPerSecond + " " + speeds.vyMetersPerSecond + " " + speeds.omegaRadiansPerSecond
+//        );
+        Logger.recordOutput("X chass", speeds.vxMetersPerSecond);
+        Logger.recordOutput("y chass", speeds.vyMetersPerSecond);
+        Logger.recordOutput("omeg chass", speeds.omegaRadiansPerSecond);
         drivetrain.percentOutputDrive(speeds, fieldRelative);
     }
 }
