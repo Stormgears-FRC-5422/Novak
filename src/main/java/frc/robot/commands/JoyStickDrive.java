@@ -18,11 +18,8 @@ import java.util.function.DoubleSupplier;
 
 public class JoyStickDrive extends Command {
     private DrivetrainBase drivetrain;
-    @AutoLogOutput
     private final DoubleSupplier txSupplier;
-    @AutoLogOutput
     private final DoubleSupplier tySupplier;
-    @AutoLogOutput
     private final DoubleSupplier omegaSupplier;
     private final BooleanSupplier robotRelativeSupplier;
     private final DoubleSupplier turboSupplier;

@@ -25,7 +25,7 @@ public class SwerveModule extends SubsystemBase {
     private TalonFX angleMotor;
     private TalonFX driveMotor;
     private CANcoder angleEncoder;
-    @AutoLogOutput
+    @AutoLogOutput(key = "SwerveModule/Module {moduleNumber}/target angle")
     private double targetAngle;
     private double targetVelocity;
 
@@ -60,10 +60,12 @@ public class SwerveModule extends SubsystemBase {
         double angle = placeInAppropriate0To360Scope(getCurrentDegrees(), getAbsolutePosition() - angleOffset);
         double absPosition = Conversions.degreesToRotation(angle, Constants.Drive.angleGearRatio);
         angleMotor.setPosition(absPosition);
+//        angleMotor.setPosition(Conversions.degreesToRotation(getCurrentDegrees(), Constants.Drive.angleGearRatio));
     }
 
-    @AutoLogOutput(key = "Module {moduleNumber}/absolute angle")
+    @AutoLogOutput(key = "SwerveModule/Module {moduleNumber}/absolute angle")
     public double getAbsolutePosition() {
+        Logger.recordOutput("abs" + moduleNumber, angleEncoder.getAbsolutePosition().getValue() * 360);
         return angleEncoder.getAbsolutePosition().getValue() * 360;
     }
 
@@ -91,15 +93,15 @@ public class SwerveModule extends SubsystemBase {
         }
         return newAngle;
     }
-    @AutoLogOutput(key = "Module {moduleNumber}/angle")
+    @AutoLogOutput(key = "SwerveModule/Module {moduleNumber}/angle")
     public double getCurrentDegrees() {
         return Conversions.rotationsToDegrees(angleMotor.getRotorPosition().getValue(), Constants.Drive.angleGearRatio);
     }
 
     public void setVelocity(SwerveModuleState desiredState) {
-        Logger.recordOutput("Module" + moduleNumber + " desired angle", desiredState.angle.getDegrees());
+        Logger.recordOutput("desiredAngle" + moduleNumber, desiredState.angle.getDegrees());
         double flip = setSteeringAngleOptimized(desiredState.angle) ? -1 : 1;
-        setSteeringAngleRaw(desiredState.angle.getDegrees());
+//        setSteeringAngleRaw(desiredState.angle.getDegrees());
         targetVelocity = desiredState.speedMetersPerSecond * flip;
         double rotorSpeed = MPSToRPS(
                 targetVelocity,
@@ -114,7 +116,22 @@ public class SwerveModule extends SubsystemBase {
     }
 
     private boolean setSteeringAngleOptimized(Rotation2d steerAngle) {
-//        System.out.println(steerAngle.getDegrees());
+//        boolean flip = false;
+//        final double angleUnclamped = getCurrentDegrees();
+//        final double target = steerAngle.getDegrees();
+//        double relativeDegrees = target - angleUnclamped;
+////        double relativeDegrees = relativeAngle.getDegrees();
+//        if (relativeDegrees > 90.0) {
+//            relativeDegrees -= 180.0;
+//            flip = true;
+//
+//        } else if (relativeDegrees < -90.0) {
+//            relativeDegrees += 180.0;
+//            flip = true;
+//        }
+//        setSteeringAngleRaw(angleUnclamped + relativeDegrees);
+//        targetAngle = angleUnclamped + relativeDegrees;
+//        return flip;
         boolean flip = false;
         final double targetClamped = steerAngle.getDegrees();
         final double angleUnclamped = getCurrentDegrees();
@@ -149,7 +166,7 @@ public class SwerveModule extends SubsystemBase {
 //        rotationDemand = positionVoltage;
 //        rotationDemand = new PositionDutyCycle(angleDegrees, 0.0, false, 0.0, 0, false, false, false);
     }
-    @AutoLogOutput(key = "Module {moduleNumber}/velocity")
+    @AutoLogOutput(key = "SwerveModule/Module {moduleNumber}/velocity")
     private double getCurrentVelocity() {
         return Conversions.RPSToMPS(
                 driveVelocity,

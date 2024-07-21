@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.utils.LoggerWrapper;
+import org.littletonrobotics.junction.AutoLogOutput;
+import org.littletonrobotics.junction.AutoLogOutputManager;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
@@ -44,6 +46,8 @@ public class Robot extends LoggedRobot {
         case 1 -> LoggerWrapper.recordMetadata("GitDirty", "Uncomitted changes");
         default -> LoggerWrapper.recordMetadata("GitDirty", "Unknown");
       }
+      AutoLogOutputManager.addPackage("frc.robot");
+      AutoLogOutputManager.addPackage("frc.utils");
 
       if (isReal()) {
 

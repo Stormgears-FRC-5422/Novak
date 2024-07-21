@@ -12,8 +12,9 @@ public final class SwerveConstants {
 
     public static final CANcoder mFrontLeftCancoder = new CANcoder(1);
     public static final CANcoder mFrontRightCancoder = new CANcoder(2);
-    public static final CANcoder mBackLeftCancoder = new CANcoder(3);
-    public static final CANcoder mBackRightCancoder = new CANcoder(4);
+    public static final CANcoder mBackRightCancoder = new CANcoder(3);
+    public static final CANcoder mBackLeftCancoder = new CANcoder(4);
+
 
     public static final double angleGearRatio = (1 / 6.75);
 
@@ -36,7 +37,7 @@ public final class SwerveConstants {
         config.Voltage.PeakForwardVoltage = 12.0;
         config.Voltage.PeakReverseVoltage = -12.0;
 
-        config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
         config.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = 0.25;
         config.OpenLoopRamps.VoltageOpenLoopRampPeriod = 0.25;
@@ -51,6 +52,12 @@ public final class SwerveConstants {
         config.Slot0.kD = 0.0000;
         config.Slot0.kS = 0.0;
         config.Slot0.kV = 0.0;
+//
+//        config.Slot0.kP = 1.0005;
+//        config.Slot0.kI = 0.0;
+//        config.Slot0.kD = 0.0004;
+//        config.Slot0.kS = 0.0;
+//        config.Slot0.kV = 0.0;
 
         config.CurrentLimits.StatorCurrentLimitEnable = true;
         config.CurrentLimits.StatorCurrentLimit = 80;
@@ -62,7 +69,7 @@ public final class SwerveConstants {
         config.Voltage.PeakForwardVoltage = 12.0;
         config.Voltage.PeakReverseVoltage = -12.0;
 
-        config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
         return config;
     }
