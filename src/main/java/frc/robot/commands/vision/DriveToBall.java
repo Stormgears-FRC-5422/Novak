@@ -52,7 +52,7 @@ public class DriveToBall extends Command {
     @Override
     public void execute() {
         double [] txty = visionSubsystem.getTXandTY();
-        if (txty == null) {
+        if (!visionSubsystem.hasValidTarget()) {
             return;
         }else {
             tx = txty[0];

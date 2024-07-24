@@ -78,6 +78,10 @@ public class VisionSubsystem extends SubsystemBase {
         return Optional.of(botPose3dTargetSpace);
 
     }
+    public boolean hasValidTarget(){
+        LimelightExtra limelightExtra = new LimelightExtra();
+        return limelightExtra.hasValidTarget(limelight);
+    }
 
 
 }
