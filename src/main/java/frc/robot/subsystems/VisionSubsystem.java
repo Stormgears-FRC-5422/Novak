@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotState;
+import frc.utils.vision.LimelightExtra;
 import frc.utils.vision.LimelightHelpers;
 
 import java.util.Arrays;
@@ -39,6 +40,10 @@ public class VisionSubsystem extends SubsystemBase {
             return Optional.of(results.targets_Fiducials[0]);
         }
         return Optional.empty();
+    }
+    public double[] getTXandTY(){
+        LimelightExtra limelightExtra = new LimelightExtra();
+        return limelightExtra.getTXandTY(limelight);
     }
 
     @Override

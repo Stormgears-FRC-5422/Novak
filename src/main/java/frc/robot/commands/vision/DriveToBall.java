@@ -59,8 +59,11 @@ public class DriveToBall extends Command {
             } else if (tx < 0) {
                 robotState.setVisionState(RobotState.VisionState.LEFT);
             }
-            tx = visionSubsystem.getTennisBall().get().tx;
-            ty = visionSubsystem.getTennisBall().get().ty;
+           // tx = visionSubsystem.getTennisBall().get().tx;
+           // ty = visionSubsystem.getTennisBall().get().ty;
+            double [] txty = visionSubsystem.getTXandTY();
+            tx = txty[0];
+            ty = txty[1];
             movement = translationController.calculate(TARGET - ty);
             rotation = rotationController.calculate(tx);
 //            System.out.println("Note detected");
