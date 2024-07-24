@@ -5,9 +5,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotState;
 import frc.utils.vision.LimelightHelpers;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import static frc.utils.vision.LimelightHelpers.getLatestResults;
+import static frc.utils.vision.LimelightHelpers.setCameraPose_RobotSpace;
 
 public class VisionSubsystem extends SubsystemBase {
     RobotState robotState;
@@ -21,7 +23,11 @@ public class VisionSubsystem extends SubsystemBase {
     //optionally returns Detector results or a null if no results
     public Optional<LimelightHelpers.LimelightTarget_Detector> getTennisBall(){
         var results = getLatestResults(limelight);
+        System.out.println(results.valid);
+        System.out.println(Arrays.toString(results.targets_Detector));
+        System.out.println(results.targets_Detector.length);
         if (results != null && results.valid && results.targets_Detector.length > 0 ) {
+            System.out.println("return tenny");
             return Optional.of(results.targets_Detector[0]);
         }
         return Optional.empty();

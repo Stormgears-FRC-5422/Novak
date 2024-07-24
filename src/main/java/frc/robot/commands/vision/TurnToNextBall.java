@@ -22,6 +22,10 @@ public class TurnToNextBall extends Command {
         addRequirements(drivetrain, visionSubsystem);
     }
 
+    @Override
+    public void initialize() {
+        System.out.println("Turn to next ball init");
+    }
 
     @Override
     public void execute() {
@@ -35,6 +39,7 @@ public class TurnToNextBall extends Command {
     @Override
     public void end(boolean interrupted) {
         drivetrain.percentOutputDrive(new ChassisSpeeds(0,0,0), false);
+        System.out.println("Turn to next ball end");
     }
 
     @Override

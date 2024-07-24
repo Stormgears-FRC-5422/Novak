@@ -7,6 +7,7 @@ import frc.robot.RobotState;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.DrivetrainBase;
 import frc.robot.subsystems.VisionSubsystem;
+import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 import frc.robot.Constants;
 
@@ -23,7 +24,9 @@ public class DriveToBall extends Command {
     int count = 0;
     double movement = 0;
     double rotation = 0;
+    @AutoLogOutput(key = "Vision/DriveToBall/tx")
     double tx;
+    @AutoLogOutput(key = "Vision/DriveToBall/ty")
     double ty;
     RobotState robotState;
 
@@ -39,6 +42,7 @@ public class DriveToBall extends Command {
 
     @Override
     public void initialize() {
+        System.out.println("Drive ball init");
         count = 0;
         movement = 0;
         rotation = 0;
@@ -49,6 +53,7 @@ public class DriveToBall extends Command {
     public void execute() {
         rotation = 0;
         if (visionSubsystem.getTennisBall().isPresent()) {
+            System.out.println("tenny ball pres");
             if (tx > 0) {
                 robotState.setVisionState(RobotState.VisionState.RIGHT);
             } else if (tx < 0) {
@@ -61,6 +66,7 @@ public class DriveToBall extends Command {
 //            System.out.println("Note detected");
             count = 0;
         } else {
+            System.out.println("tenny ball no pres");
             count++;
             robotState.setVisionState(RobotState.VisionState.IDLE);
         }

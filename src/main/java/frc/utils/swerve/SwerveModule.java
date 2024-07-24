@@ -59,7 +59,7 @@ public class SwerveModule extends SubsystemBase {
     public void resetToAbsolute() {
         double angle = placeInAppropriate0To360Scope(getCurrentDegrees(), getAbsolutePosition() - angleOffset);
         double absPosition = Conversions.degreesToRotation(angle, Constants.Drive.angleGearRatio);
-        angleMotor.setPosition(absPosition);
+        angleMotor.setPosition(getAbsolutePosition());
 //        angleMotor.setPosition(Conversions.degreesToRotation(getCurrentDegrees(), Constants.Drive.angleGearRatio));
     }
 
@@ -133,7 +133,9 @@ public class SwerveModule extends SubsystemBase {
 //        targetAngle = angleUnclamped + relativeDegrees;
 //        return flip;
         boolean flip = false;
+
         final double targetClamped = steerAngle.getDegrees();
+        Logger.recordOutput("target clamped" + moduleNumber, targetClamped);
         final double angleUnclamped = getCurrentDegrees();
         final Rotation2d angleClamped = Rotation2d.fromDegrees(angleUnclamped);
         final Rotation2d relativeAngle = Rotation2d.fromDegrees(targetClamped).rotateBy(Conversions.inverse(angleClamped));
