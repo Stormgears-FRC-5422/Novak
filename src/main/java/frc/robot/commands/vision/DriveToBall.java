@@ -51,6 +51,17 @@ public class DriveToBall extends Command {
     }
     @Override
     public void execute() {
+        double [] txty = visionSubsystem.getTXandTY();
+        if (txty == null) {
+            return;
+        }else {
+            tx = txty[0];
+            ty = txty[1];
+            movement = translationController.calculate(TARGET - ty);
+            rotation = rotationController.calculate(tx);
+
+        }
+
         rotation = 0;
         if (visionSubsystem.getTennisBall().isPresent()) {
             System.out.println("tenny ball pres");
@@ -61,11 +72,7 @@ public class DriveToBall extends Command {
             }
            // tx = visionSubsystem.getTennisBall().get().tx;
            // ty = visionSubsystem.getTennisBall().get().ty;
-            double [] txty = visionSubsystem.getTXandTY();
-            tx = txty[0];
-            ty = txty[1];
-            movement = translationController.calculate(TARGET - ty);
-            rotation = rotationController.calculate(tx);
+
 //            System.out.println("Note detected");
             count = 0;
         } else {
