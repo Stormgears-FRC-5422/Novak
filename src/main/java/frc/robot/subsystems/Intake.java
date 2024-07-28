@@ -24,6 +24,7 @@ public class Intake extends SubsystemBase {
   public Intake() {
     // used fake id, change to real motor id later
     intakeMotor = new CANSparkMax(Constants.Intake.intakeID, CANSparkLowLevel.MotorType.kBrushless);
+    intakeMotor.setInverted(true);
     setIntakeState(IntakeState.OFF);
   }
 

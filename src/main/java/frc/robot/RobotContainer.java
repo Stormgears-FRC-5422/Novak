@@ -97,7 +97,7 @@ public class RobotContainer {
             new Trigger(() -> joystick.drivetoBall()).whileTrue(driveToBall);
         }
         if (Toggles.useIntake) {
-            new Trigger(() -> joystick.intake()).onTrue(intakeCommand);
+            new Trigger(() -> joystick.intake()).whileTrue(intakeCommand);
         }
     }
 

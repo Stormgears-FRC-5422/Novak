@@ -41,10 +41,12 @@ public class Drivetrain extends DrivetrainBase {
 
     @AutoLogOutput
     SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
+    @AutoLogOutput
+    SwerveModuleState[] realStates = m_kinematics.toSwerveModuleStates(new ChassisSpeeds());
 
 
     public Drivetrain() {
-        m_frontLeftModule = new SwerveModule(1, new SwerveModule.SwerveModuleConstants(11,10 , Constants.Drive.frontLeftOffsetDegrees),
+        m_frontLeftModule = new SwerveModule(1, new SwerveModule.SwerveModuleConstants(11, 10, Constants.Drive.frontLeftOffsetDegrees),
                 SwerveConstants.mFrontLeftCancoder);
         m_frontRightModule = new SwerveModule(2, new SwerveModule.SwerveModuleConstants(21, 20, Constants.Drive.frontRightOffsetDegrees),
                 SwerveConstants.mFrontRightCancoder);
@@ -64,10 +66,19 @@ public class Drivetrain extends DrivetrainBase {
         states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
 //        System.out.println(states[0].angle.getDegrees());
 
-        m_frontLeftModule.setVelocity(states[0]);
-        m_frontRightModule.setVelocity(states[1]);
-        m_backRightModule.setVelocity(states[2]);
-        m_backLeftModule.setVelocity(states[3]);
+        if (m_chassisSpeeds.vxMetersPerSecond != 0 || m_chassisSpeeds.vyMetersPerSecond != 0 || m_chassisSpeeds.omegaRadiansPerSecond != 0) {
+            m_frontLeftModule.setVelocity(states[0]);
+            m_frontRightModule.setVelocity(states[1]);
+            m_backRightModule.setVelocity(states[2]);
+            m_backLeftModule.setVelocity(states[3]);
+        }
+        realStates = new SwerveModuleState[]{
+                m_frontLeftModule.getState(),
+                m_frontRightModule.getState(),
+                m_backRightModule.getState(),
+                m_backLeftModule.getState()
+        };
+
 
     }
 }

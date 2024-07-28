@@ -1,5 +1,6 @@
 package frc.utils.swerve;
 
+import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.*;
@@ -16,6 +17,7 @@ import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 import static frc.utils.Conversions.MPSToRPS;
+import static frc.utils.swerve.SwerveConstants.kV;
 
 
 public class SwerveModule extends SubsystemBase {
@@ -49,6 +51,9 @@ public class SwerveModule extends SubsystemBase {
         angleMotor.getConfigurator().apply(SwerveConstants.AngleFXConfig());
         driveMotor.getConfigurator().apply(SwerveConstants.DriveFXConfig());
 
+        angleMotor.setInverted(true);
+
+
         driveMotor.setPosition(0);
 
         resetToAbsolute();
@@ -57,9 +62,14 @@ public class SwerveModule extends SubsystemBase {
 
 
     public void resetToAbsolute() {
-        double angle = placeInAppropriate0To360Scope(getCurrentDegrees(), getAbsolutePosition() - angleOffset);
-        double absPosition = Conversions.degreesToRotation(angle, Constants.Drive.angleGearRatio);
-        angleMotor.setPosition(getAbsolutePosition());
+//        double angle = placeInAppropriate0To360Scope(getCurrentDegrees(), getAbsolutePosition() - angleOffset);
+//        double absPosition = Conversions.degreesToRotation(angle, Constants.Drive.angleGearRatio);
+        angleEncoder.getAbsolutePosition().waitForUpdate(1);
+        double absPosition = Conversions.degreesToRotation(getAbsolutePosition() - angleOffset, Constants.Drive.angleGearRatio);
+        Logger.recordOutput("reset abs " + moduleNumber, absPosition);
+        StatusCode statusCode = angleMotor.setPosition(absPosition, 1);
+        Logger.recordOutput("Sts code" + moduleNumber, statusCode);
+//
 //        angleMotor.setPosition(Conversions.degreesToRotation(getCurrentDegrees(), Constants.Drive.angleGearRatio));
     }
 
@@ -95,7 +105,17 @@ public class SwerveModule extends SubsystemBase {
     }
     @AutoLogOutput(key = "SwerveModule/Module {moduleNumber}/angle")
     public double getCurrentDegrees() {
-        return Conversions.rotationsToDegrees(angleMotor.getRotorPosition().getValue(), Constants.Drive.angleGearRatio);
+        return normalizeAngle(Conversions.rotationsToDegrees(angleMotor.getRotorPosition().getValue(), Constants.Drive.angleGearRatio));
+    }
+
+    private double normalizeAngle(double angle) {
+        angle = angle % 360; // Ensure the angle is within 0 to 360
+        if (angle > 180) {
+            angle -= 360; // Convert angles greater than 180 to negative equivalents
+        } else if (angle < -180) {
+            angle += 360; // Convert angles less than -180 to positive equivalents
+        }
+        return angle;
     }
 
     public void setVelocity(SwerveModuleState desiredState) {
@@ -164,9 +184,10 @@ public class SwerveModule extends SubsystemBase {
 
 //        System.out.println(rotorPosition);
 //        PositionVoltage positionVoltage = new PositionVoltage(rotorPosition);
+        Logger.recordOutput("rotor pos " + moduleNumber, rotorPosition);
         rotationDemand = new PositionDutyCycle(rotorPosition, 0.0, false, 0.0, 0, false, false, false);
+//        rotationDemand = new VoltageOut(rotorPosition* kV);
 //        rotationDemand = positionVoltage;
-//        rotationDemand = new PositionDutyCycle(angleDegrees, 0.0, false, 0.0, 0, false, false, false);
     }
     @AutoLogOutput(key = "SwerveModule/Module {moduleNumber}/velocity")
     private double getCurrentVelocity() {
@@ -205,6 +226,9 @@ public class SwerveModule extends SubsystemBase {
                 Math.abs(getCurrentVelocity()) - Math.abs(targetVelocity));
     }
 
+    public SwerveModuleState getState() {
+        return new SwerveModuleState(getCurrentVelocity(), Rotation2d.fromDegrees(getCurrentDegrees()));
+    }
 
     @Override
     public void periodic() {
@@ -214,10 +238,12 @@ public class SwerveModule extends SubsystemBase {
 
 //        Logger.recordOutput("Module" + moduleNumber + " rotor position", rotorPosition);
 
-
+//        System.out.println(rotationDemand.getControlInfo());
         angleMotor.setControl(rotationDemand);
 //        angleMotor.setPosition()
         driveMotor.setControl(driveDemand);
+        rotationDemand = new NeutralOut();
+        driveDemand = new NeutralOut();
     }
 
     public static class SwerveModuleConstants {
