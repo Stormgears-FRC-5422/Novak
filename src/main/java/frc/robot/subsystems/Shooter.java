@@ -19,32 +19,34 @@ public class Shooter extends SubsystemBase {
     }
 
     private final CANSparkMax shooterMotor;
-    private final CANSparkMax shooterSwerveMotor;
-    private final RelativeEncoder shooterEncoder;
     private double m_currentPosition;
+    private final RelativeEncoder m_alternateEncoder;
 
     public Shooter() {
         shooterMotor = new CANSparkMax(Constants.Shooter.shooterID, CANSparkLowLevel.MotorType.kBrushless);
-        shooterSwerveMotor = new CANSparkMax(Constants.Shooter.shooterSwerveID, CANSparkLowLevel.MotorType.kBrushless);
-        shooterEncoder = shooterMotor.getEncoder();
+        m_alternateEncoder = shooterMotor.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, 8192);
     }
+
     @Override
     public void periodic() {
-        m_currentPosition = shooterEncoder.getPosition();
+        m_currentPosition = m_alternateEncoder.getPosition();
+        System.out.println("alr encoder position: " + m_alternateEncoder.getPosition());
+        System.out.println("alr encoder velocity: " + m_alternateEncoder.getVelocity());
     }
 
     public double getCurrentPosition() {
         return m_currentPosition;
     }
 
+
+
     public double getDegreesFromPosition(double position) {
-        return position / (Constants.Shooter.gearratio / 360.0 );
+        return position / (Constants.Shooter.gearratio / 360.0);
     }
+
     public void setSpeed(double speed) {
         shooterMotor.set(speed);
     }
 
-    public void setSwerveSpeed(double speed) {
-        shooterSwerveMotor.set(speed);
-    }
+
 }

@@ -24,6 +24,7 @@ import frc.robot.Constants.*;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pigeon;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.VisionSubsystem;
 
 import java.util.function.ToDoubleBiFunction;
@@ -35,6 +36,7 @@ public class RobotContainer {
     Intake intake;
     Pigeon pigeon;
     DrivetrainBase drivetrain;
+    Shooter shooter;
 
     //Commands
     TurnToNextBall turnToNextBall;
@@ -91,6 +93,9 @@ public class RobotContainer {
                 driveToBall = new DriveToBall(drivetrain, visionSubsystem);
             }
 
+        }
+        if (Toggles.useShooter) {
+            shooter = new Shooter();
         }
 
         configureBindings();
