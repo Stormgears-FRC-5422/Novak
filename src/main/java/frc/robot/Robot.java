@@ -85,7 +85,7 @@ public class Robot extends LoggedRobot {
       }
       logActiveCommand();
       LoggerWrapper.start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
-
+    }
 
       try {
         m_robotContainer = new RobotContainer();
@@ -93,7 +93,7 @@ public class Robot extends LoggedRobot {
         throw new RuntimeException(e);
       }
       System.out.println("[DONE] Robot");
-    }
+
   }
 
   @Override

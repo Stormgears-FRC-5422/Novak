@@ -35,4 +35,19 @@ public class SolidworksXboxController extends SolidworksJoystick {
     }
 
     public boolean intake() { return controller.getYButtonIsHeld(); }
+
+    @Override
+    public boolean relayStart() {
+        return controller.getXisPressed();
+
+    }
+    @Override
+    public boolean relayStop() {
+        return controller.getAButtonIsHeld();
+    }
+
+    @Override
+    public boolean relayOff() {
+        return controller.getYButtonIsHeld();
+    }
 }
