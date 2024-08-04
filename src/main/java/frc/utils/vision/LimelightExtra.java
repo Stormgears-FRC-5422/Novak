@@ -63,6 +63,14 @@ public class LimelightExtra {
         txandty[1] = table.getEntry("ty").getDouble(0);
         return txandty;
     }
+    public void changeToDetectorPipeline(String limelight) { //Changes the pipeline to the detector pipeline
+        NetworkTable table = NetworkTableInstance.getDefault().getTable(limelight);
+        table.getEntry("pipeline").setNumber(4);
+    }
+    public void changeToAprilTagPipeline(String limelight) { //Changes the pipeline to the AprilTag pipeline
+        NetworkTable table = NetworkTableInstance.getDefault().getTable(limelight);
+        table.getEntry("pipeline").setNumber(1);
+    }
 
 
 }

@@ -29,7 +29,8 @@ public class TurnToNextBall extends Command {
 
     @Override
     public void execute() {
-        while (!visionSubsystem.getTennisBall().isPresent()) {
+        visionSubsystem.changeToDetectorPipeline();
+        while (!visionSubsystem.hasValidTarget()) {
             drivetrain.percentOutputDrive(new ChassisSpeeds(vxPercent,vyPercent,rotationSpeed), false);
         }
         //turn clockwise to next ball

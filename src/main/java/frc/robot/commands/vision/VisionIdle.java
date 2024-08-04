@@ -36,9 +36,10 @@ public class VisionIdle extends Command {
     @Override
     public void execute() {
         if (robotState.getShooterHeight() == RobotState.ShooterHeight.HIGH) {
+
             VisionState visionState = VisionState.IDLE;
             robotState.setVisionState(visionState);
-
+            visionSubsystem.changeToAprilTagPipeline();
             if (visionSubsystem.getAprilTags().isPresent()) {
                 visibleAprilTags = visionSubsystem.getAprilTags().get().length;
                 if (visibleAprilTags == 1) {
@@ -70,12 +71,12 @@ public class VisionIdle extends Command {
                 robotState.setDistanceToTarget(0.0);
             }
 
-
+        visionSubsystem.changeToDetectorPipeline();
         } else if (robotState.getShooterHeight() == RobotState.ShooterHeight.LOW) {
 
-            if (visionSubsystem.getTennisBall().isPresent()) {
+            if (visionSubsystem.hasValidTarget()) {
 
-                double tx = visionSubsystem.getTennisBall().get().tx;
+                double tx = visionSubsystem.getTXandTY()[0];
                 if (tx > 0) {
 
                     VisionState visionState = VisionState.RIGHT;

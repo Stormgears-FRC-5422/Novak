@@ -45,6 +45,14 @@ public class VisionSubsystem extends SubsystemBase {
         LimelightExtra limelightExtra = new LimelightExtra();
         return limelightExtra.getTXandTY(limelight);
     }
+    public void changeToDetectorPipeline(){
+        LimelightExtra limelightExtra = new LimelightExtra();
+        limelightExtra.changeToDetectorPipeline(limelight);
+    }
+    public void changeToAprilTagPipeline(){
+        LimelightExtra limelightExtra = new LimelightExtra();
+        limelightExtra.changeToAprilTagPipeline(limelight);
+    }
 
     @Override
     public void periodic() {

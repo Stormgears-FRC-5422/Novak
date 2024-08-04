@@ -51,6 +51,7 @@ public class DriveToBall extends Command {
     }
     @Override
     public void execute() {
+        visionSubsystem.changeToDetectorPipeline();
         double [] txty = visionSubsystem.getTXandTY();
         if (!visionSubsystem.hasValidTarget()) {
             return;

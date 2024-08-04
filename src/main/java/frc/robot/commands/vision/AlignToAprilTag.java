@@ -33,9 +33,10 @@ public class AlignToAprilTag extends Command {
 
     @Override
     public void execute() {
+        visionSubsystem.changeToAprilTagPipeline();
         if (robotState.getShooterHeight() == RobotState.ShooterHeight.HIGH) {
 
-            if (visionSubsystem.getAprilTag().isPresent()) {
+            if (visionSubsystem.hasValidTarget()) {
 
                 visibleAprilTags = visionSubsystem.getAprilTags().get().length;
 
