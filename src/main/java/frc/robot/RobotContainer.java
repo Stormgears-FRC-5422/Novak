@@ -106,8 +106,10 @@ public class RobotContainer {
 
     private void configureBindings() {
         System.out.println("configure button");
-       // Trigger yButton = new JoystickButton(controller, XboxController.Button.kY.value);
-//        yButton.onTrue(intakeCommand);
+        if (Toggles.useIntake){
+            new Trigger(()-> joystick.intake()).onTrue(intakeCommand);
+        }
+
         Relaytest relaycontroller = new Relaytest();
         new Trigger(()->joystick.relayStart()).onTrue(new InstantCommand(()->relaycontroller.startActuator()));
         new Trigger(()->joystick.relayStop()).onTrue(new InstantCommand(()->relaycontroller.stopActuator()));
