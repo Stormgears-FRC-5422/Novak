@@ -107,14 +107,15 @@ public class RobotContainer {
         if (Toggles.useIntake){
             new Trigger(()-> joystick.intake()).onTrue(new ParallelCommandGroup(intakeCommand, storageCommand));
         }
+        if (Toggles.useShooter){
+            new Trigger(()-> joystick.shoot()).onTrue(new ParallelCommandGroup(shoot, storageCommand));
+        }
 
         Relaytest relaycontroller = new Relaytest();
         //new Trigger(()->joystick.relayStart()).onTrue(new InstantCommand(()->relaycontroller.startActuator()));
         //new Trigger(()->joystick.relayStop()).onTrue(new InstantCommand(()->relaycontroller.stopActuator()));
         //new Trigger(()->joystick.relayOff()).onTrue(new InstantCommand(()->relaycontroller.offActuator()));
-        if (Toggles.useShooter) {
-            new Trigger(()->joystick.shoot()).onTrue(shoot);
-        }
+
 
         //new InstantCommand(() ->relaytest.startActuator())
         //relaytest.startActuator()
