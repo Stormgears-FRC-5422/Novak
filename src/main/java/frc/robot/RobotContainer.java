@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.JoyStickDrive;
 import frc.robot.commands.PigeonCommand;
+import frc.robot.commands.Shoot;
 import frc.robot.commands.vision.AlignToAprilTag;
 import frc.robot.commands.vision.DriveToBall;
 import frc.robot.commands.vision.TurnToNextBall;
@@ -43,6 +44,7 @@ public class RobotContainer {
     DriveToBall driveToBall;
     VisionIdle visionIdle;
     AlignToAprilTag alignToAprilTag;
+    Shoot shoot;
 
     IntakeCommand intakeCommand;
 
@@ -96,6 +98,7 @@ public class RobotContainer {
         }
         if (Toggles.useShooter) {
             shooter = new Shooter();
+            shoot = new Shoot(shooter);
         }
 
         configureBindings();
@@ -109,6 +112,9 @@ public class RobotContainer {
         new Trigger(()->joystick.relayStart()).onTrue(new InstantCommand(()->relaycontroller.startActuator()));
         new Trigger(()->joystick.relayStop()).onTrue(new InstantCommand(()->relaycontroller.stopActuator()));
         new Trigger(()->joystick.relayOff()).onTrue(new InstantCommand(()->relaycontroller.offActuator()));
+        if (Toggles.useShooter) {
+            new Trigger(()->joystick.shoot()).onTrue(shoot);
+        }
 
         //new InstantCommand(() ->relaytest.startActuator())
         //relaytest.startActuator()

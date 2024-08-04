@@ -19,4 +19,5 @@ public abstract class SolidworksJoystick {
     public abstract boolean relayStop();
 
     public abstract boolean relayOff();
+    public abstract boolean shoot();
 }

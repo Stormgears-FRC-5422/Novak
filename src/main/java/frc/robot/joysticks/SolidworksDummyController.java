@@ -50,6 +50,11 @@ public class SolidworksDummyController extends SolidworksJoystick {
     public boolean relayOff() {
         return false;
     }
+
+    @Override
+    public boolean shoot() {
+        return false;
+    }
 }
 
 
