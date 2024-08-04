@@ -5,15 +5,9 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.JoyStickDrive;
-import frc.robot.commands.PigeonCommand;
-import frc.robot.commands.Shoot;
+import frc.robot.commands.*;
 import frc.robot.commands.vision.AlignToAprilTag;
 import frc.robot.commands.vision.DriveToBall;
 import frc.robot.commands.vision.TurnToNextBall;
@@ -26,6 +20,7 @@ import frc.robot.subsystems.*;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pigeon;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Storage;
 import frc.robot.subsystems.VisionSubsystem;
 
 import java.util.function.ToDoubleBiFunction;
@@ -38,6 +33,7 @@ public class RobotContainer {
     Pigeon pigeon;
     DrivetrainBase drivetrain;
     Shooter shooter;
+    Storage storage;
 
     //Commands
     TurnToNextBall turnToNextBall;
@@ -45,7 +41,7 @@ public class RobotContainer {
     VisionIdle visionIdle;
     AlignToAprilTag alignToAprilTag;
     Shoot shoot;
-
+    StorageCommand storageCommand;
     IntakeCommand intakeCommand;
 
     SolidworksJoystick joystick;
@@ -78,6 +74,8 @@ public class RobotContainer {
         if (Toggles.useIntake) {
             intake = new Intake();
             intakeCommand = new IntakeCommand(intake);
+            storage = new Storage();
+            storageCommand = new StorageCommand(storage);
         }
 
         //To implement a trigger, make a function in the following classes: SolidworksJoystick, SolidworksLogitechController, SolidworksXboxController, SolidworksDummyController
@@ -107,24 +105,16 @@ public class RobotContainer {
     private void configureBindings() {
         System.out.println("configure button");
         if (Toggles.useIntake){
-            new Trigger(()-> joystick.intake()).onTrue(intakeCommand);
+            new Trigger(()-> joystick.intake()).onTrue(new ParallelCommandGroup(intakeCommand, storageCommand));
         }
 
         Relaytest relaycontroller = new Relaytest();
-        new Trigger(()->joystick.relayStart()).onTrue(new InstantCommand(()->relaycontroller.startActuator()));
-        new Trigger(()->joystick.relayStop()).onTrue(new InstantCommand(()->relaycontroller.stopActuator()));
-        new Trigger(()->joystick.relayOff()).onTrue(new InstantCommand(()->relaycontroller.offActuator()));
+        //new Trigger(()->joystick.relayStart()).onTrue(new InstantCommand(()->relaycontroller.startActuator()));
+        //new Trigger(()->joystick.relayStop()).onTrue(new InstantCommand(()->relaycontroller.stopActuator()));
+        //new Trigger(()->joystick.relayOff()).onTrue(new InstantCommand(()->relaycontroller.offActuator()));
         if (Toggles.useShooter) {
             new Trigger(()->joystick.shoot()).onTrue(shoot);
         }
-        if (Toggles.useVision) {
-            visionSubsystem.setDefaultCommand(visionIdle);
-        }
-        if (Toggles.useVision && Toggles.useDrive) {
-            new Trigger(() -> joystick.drivetoBall()).whileTrue(driveToBall);
-            
-        }
-
 
         //new InstantCommand(() ->relaytest.startActuator())
         //relaytest.startActuator()
