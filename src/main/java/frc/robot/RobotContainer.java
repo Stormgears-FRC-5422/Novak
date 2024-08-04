@@ -117,6 +117,13 @@ public class RobotContainer {
         if (Toggles.useShooter) {
             new Trigger(()->joystick.shoot()).onTrue(shoot);
         }
+        if (Toggles.useVision) {
+            visionSubsystem.setDefaultCommand(visionIdle);
+        }
+        if (Toggles.useVision && Toggles.useDrive) {
+            new Trigger(() -> joystick.drivetoBall()).whileTrue(driveToBall);
+        }
+
 
         //new InstantCommand(() ->relaytest.startActuator())
         //relaytest.startActuator()
