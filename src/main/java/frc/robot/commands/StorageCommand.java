@@ -11,7 +11,7 @@ public class StorageCommand extends Command {
 
     @Override
     public void execute() {
-        storage.setSpeed(0.8);
+        storage.setSpeed(-0.5);
     }
 
     @Override

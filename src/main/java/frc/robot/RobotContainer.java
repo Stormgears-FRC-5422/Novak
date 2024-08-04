@@ -105,10 +105,13 @@ public class RobotContainer {
     private void configureBindings() {
         System.out.println("configure button");
         if (Toggles.useIntake){
-            new Trigger(()-> joystick.intake()).onTrue(new ParallelCommandGroup(intakeCommand, storageCommand));
+            new Trigger(()-> joystick.intake()).onTrue(intakeCommand);
         }
+            //new Trigger(()-> joystick.intake()).onTrue(new ParallelCommandGroup(intakeCommand, storageCommand));
+        //}
         if (Toggles.useShooter){
-            new Trigger(()-> joystick.shoot()).onTrue(new ParallelCommandGroup(shoot, storageCommand));
+            new Trigger(()-> joystick.shoot()).onTrue(shoot);
+            //new Trigger(()-> joystick.shoot()).onTrue(new ParallelCommandGroup(shoot, storageCommand));
         }
 
         Relaytest relaycontroller = new Relaytest();

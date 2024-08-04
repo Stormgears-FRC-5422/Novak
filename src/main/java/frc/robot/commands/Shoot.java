@@ -24,7 +24,7 @@ public class Shoot extends Command {
 
     @Override
     public void execute() {
-        shooter.setSpeed(0.5);
+        shooter.setSpeed(0.3);
         count++;
     }
 }
