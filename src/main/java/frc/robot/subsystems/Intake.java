@@ -4,9 +4,8 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkLowLevel;
+import com.revrobotics.*;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.revrobotics.CANSparkMax;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
@@ -36,6 +35,8 @@ public class Intake extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     intakeMotor.set(intakeMotorSpeed);
+
+
 
   }
 

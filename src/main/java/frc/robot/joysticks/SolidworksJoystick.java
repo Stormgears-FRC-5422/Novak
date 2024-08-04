@@ -14,4 +14,9 @@ public abstract class SolidworksJoystick {
     public abstract boolean drivetoBall();
 
     public abstract boolean intake();
+    public abstract boolean relayStart();
+
+    public abstract boolean relayStop();
+
+    public abstract boolean relayOff();
 }

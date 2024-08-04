@@ -20,6 +20,7 @@ public class Pigeon extends SubsystemBase {
     @Override
     public void periodic() {
         super.periodic();
-        System.out.println(getYaw());
+        //Todo: add a toggle for pigeon
+//        System.out.println(getYaw());
     }
 }

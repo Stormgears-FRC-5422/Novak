@@ -37,6 +37,19 @@ public class SolidworksDummyController extends SolidworksJoystick {
 
     @Override
     public boolean intake() { return false; }
+
+    @Override
+    public boolean relayStart() {
+        return false;
+    }
+    @Override
+    public boolean relayStop() {
+        return false;
+    }
+    @Override
+    public boolean relayOff() {
+        return false;
+    }
 }
 
 
