@@ -22,10 +22,10 @@ public class Drivetrain extends DrivetrainBase {
             new Translation2d(Constants.Drive.drivetrainWheelbaseMeters / 2.0, Constants.Drive.drivetrainTrackwidthMeters / 2.0),
             // Front right
             new Translation2d(Constants.Drive.drivetrainWheelbaseMeters / 2.0, -Constants.Drive.drivetrainTrackwidthMeters / 2.0),
-            // Back left
-            new Translation2d(-Constants.Drive.drivetrainWheelbaseMeters / 2.0, Constants.Drive.drivetrainTrackwidthMeters / 2.0),
             // Back right
-            new Translation2d(-Constants.Drive.drivetrainWheelbaseMeters / 2.0, -Constants.Drive.drivetrainTrackwidthMeters / 2.0)
+            new Translation2d(-Constants.Drive.drivetrainWheelbaseMeters / 2.0, -Constants.Drive.drivetrainTrackwidthMeters / 2.0),
+            // Back left
+            new Translation2d(-Constants.Drive.drivetrainWheelbaseMeters / 2.0, Constants.Drive.drivetrainTrackwidthMeters / 2.0)
     );
 
     private final SwerveModule m_frontLeftModule;
@@ -64,6 +64,7 @@ public class Drivetrain extends DrivetrainBase {
     public void periodic() {
 
         states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
+
 //        System.out.println(states[0].angle.getDegrees());
 
         if (m_chassisSpeeds.vxMetersPerSecond != 0 || m_chassisSpeeds.vyMetersPerSecond != 0 || m_chassisSpeeds.omegaRadiansPerSecond != 0) {

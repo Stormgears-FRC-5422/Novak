@@ -1,11 +1,13 @@
 package frc.utils.swerve;
 
+import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.*;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.revrobotics.CANSparkLowLevel;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -13,6 +15,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix6.hardware.TalonFX;
 import frc.robot.Constants;
 import frc.utils.Conversions;
+import frc.utils.motorcontrol.MotorController;
+import frc.utils.motorcontrol.StormSpark;
+import frc.utils.motorcontrol.StormTalon;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
@@ -26,6 +31,8 @@ public class SwerveModule extends SubsystemBase {
 
     private TalonFX angleMotor;
     private TalonFX driveMotor;
+//    private MotorController angleMotor;
+//    private MotorController driveMotor;
     private CANcoder angleEncoder;
     @AutoLogOutput(key = "SwerveModule/Module {moduleNumber}/target angle")
     private double targetAngle;
@@ -45,11 +52,22 @@ public class SwerveModule extends SubsystemBase {
 
         angleEncoder = cancoder;
 
+//        if (Constants.Drive.motorControllerType.equals("Talon")) {
+//            angleMotor = new StormTalon(moduleConstants.angleMotorID);
+//            driveMotor = new StormTalon(moduleConstants.driveMotorID);
+//        } else {
+//            angleMotor = new StormSpark(moduleConstants.angleMotorID, CANSparkLowLevel.MotorType.kBrushless, StormSpark.MotorKind.k550);
+//            driveMotor = new StormSpark(moduleConstants.driveMotorID, CANSparkLowLevel.MotorType.kBrushless, StormSpark.MotorKind.k550);
+//        }
+
         angleMotor = new TalonFX(moduleConstants.angleMotorID);
         driveMotor = new TalonFX(moduleConstants.driveMotorID);
 
         angleMotor.getConfigurator().apply(SwerveConstants.AngleFXConfig());
         driveMotor.getConfigurator().apply(SwerveConstants.DriveFXConfig());
+
+//        angleMotor.applyConfig();
+//        driveMotor.applyConfig();
 
         angleMotor.setInverted(true);
 
@@ -105,7 +123,11 @@ public class SwerveModule extends SubsystemBase {
     }
     @AutoLogOutput(key = "SwerveModule/Module {moduleNumber}/angle")
     public double getCurrentDegrees() {
-        return normalizeAngle(Conversions.rotationsToDegrees(angleMotor.getRotorPosition().getValue(), Constants.Drive.angleGearRatio));
+        angleMotor.getRotorPosition().refresh();
+        angleMotor.getRotorVelocity().refresh();
+        double rotorPosition = BaseStatusSignal.getLatencyCompensatedValue(angleMotor.getRotorPosition(), angleMotor.getRotorVelocity());
+//        return normalizeAngle(Conversions.rotationsToDegrees(rotorPosition, Constants.Drive.angleGearRatio));
+        return Conversions.rotationsToDegrees(rotorPosition, Constants.Drive.angleGearRatio);
     }
 
     private double normalizeAngle(double angle) {
@@ -121,6 +143,7 @@ public class SwerveModule extends SubsystemBase {
     public void setVelocity(SwerveModuleState desiredState) {
         Logger.recordOutput("desiredAngle" + moduleNumber, desiredState.angle.getDegrees());
         double flip = setSteeringAngleOptimized(desiredState.angle) ? -1 : 1;
+//        double flip = 1;
 //        setSteeringAngleRaw(desiredState.angle.getDegrees());
         targetVelocity = desiredState.speedMetersPerSecond * flip;
         double rotorSpeed = MPSToRPS(
@@ -230,6 +253,11 @@ public class SwerveModule extends SubsystemBase {
         return new SwerveModuleState(getCurrentVelocity(), Rotation2d.fromDegrees(getCurrentDegrees()));
     }
 
+    @AutoLogOutput ( key = "SwerveModule/Module {moduleNumber}/module angle" )
+    public double getModuleAngle() {
+        return Rotation2d.fromDegrees(getCurrentDegrees()).getDegrees();
+    }
+
     @Override
     public void periodic() {
         drivePosition = driveMotor.getRotorPosition().getValueAsDouble();
@@ -244,6 +272,7 @@ public class SwerveModule extends SubsystemBase {
         driveMotor.setControl(driveDemand);
         rotationDemand = new NeutralOut();
         driveDemand = new NeutralOut();
+
     }
 
     public static class SwerveModuleConstants {

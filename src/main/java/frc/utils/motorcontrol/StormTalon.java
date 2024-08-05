@@ -2,6 +2,7 @@ package frc.utils.motorcontrol;
 
 import com.ctre.phoenix6.controls.ControlRequest;
 import com.ctre.phoenix6.hardware.TalonFX;
+import frc.utils.swerve.SwerveConstants;
 
 public class StormTalon extends TalonFX implements MotorController {
 
@@ -36,6 +37,11 @@ public class StormTalon extends TalonFX implements MotorController {
 
     @Override
     public void applyConfig() {
+        if (this.getDeviceID() % 2 == 0) {
+            this.getConfigurator().apply(SwerveConstants.AngleFXConfig());
+        } else {
+            this.getConfigurator().apply(SwerveConstants.DriveFXConfig());
+        }
 
     }
 

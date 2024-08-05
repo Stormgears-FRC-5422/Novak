@@ -54,7 +54,7 @@ public final class SwerveConstants {
     AngleFXConfig() {
         TalonFXConfiguration config = new TalonFXConfiguration();
 
-        config.Slot0.kP = 0.1;
+        config.Slot0.kP = 0.25;
         config.Slot0.kI = 0.0;
         config.Slot0.kD = 0.0000;
         config.Slot0.kS = 0.0;
@@ -68,19 +68,19 @@ public final class SwerveConstants {
 //        config.Slot0.kS = 0.0;
 //        config.Slot0.kV = 0.04333333333333334;
 
-//        config.CurrentLimits.StatorCurrentLimitEnable = true;
-        config.CurrentLimits.StatorCurrentLimitEnable = false;
+        config.CurrentLimits.StatorCurrentLimitEnable = true;
+//        config.CurrentLimits.StatorCurrentLimitEnable = false;
         config.CurrentLimits.StatorCurrentLimit = 80;
 
-//        config.CurrentLimits.SupplyCurrentLimitEnable = true;
-        config.CurrentLimits.SupplyCurrentLimitEnable = false;
+        config.CurrentLimits.SupplyCurrentLimitEnable = true;
+//        config.CurrentLimits.SupplyCurrentLimitEnable = false;
         config.CurrentLimits.SupplyCurrentLimit = 60;
         config.CurrentLimits.SupplyTimeThreshold = 0.2;
 
-//        config.Voltage.PeakForwardVoltage = 12.0;
-        config.Voltage.PeakForwardVoltage = 16;
-//        config.Voltage.PeakReverseVoltage = -12.0;
-        config.Voltage.PeakReverseVoltage = -16.0;
+        config.Voltage.PeakForwardVoltage = 12.0;
+//        config.Voltage.PeakForwardVoltage = 16;
+        config.Voltage.PeakReverseVoltage = -12.0;
+//        config.Voltage.PeakReverseVoltage = -16.0;
 
         config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
