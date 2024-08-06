@@ -35,6 +35,12 @@ public class Shooter extends SubsystemBase {
             case OFF -> {
                 shooterMotor.set(0);
             }
+            case FORWARD -> {
+                shooterMotor.set(0.5);
+            }
+            case BACKWARD -> {
+                shooterMotor.set(-0.5);
+            }
 
 
         }
@@ -53,9 +59,8 @@ public class Shooter extends SubsystemBase {
         return position / (Constants.Shooter.gearratio / 360.0);
     }
 
-    public void setSpeed(double speed) {
-        shooterMotor.set(speed);
-        
+    public void setState(shooterState state) {
+        this.shooterState = state;
     }
     public double getAppliedOutput() {
         return shooterMotor.getAppliedOutput();

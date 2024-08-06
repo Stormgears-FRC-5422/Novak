@@ -20,6 +20,8 @@ public class Shoot extends Command {
     @Override
     public void initialize() {
         count =0;
+        shooter.setState(Shooter.shooterState.BACKWARD);
+
     }
 
     @Override
@@ -29,13 +31,12 @@ public class Shoot extends Command {
 
     @Override
     public void execute() {
-        shooter.setSpeed(0.15);
         storage.setSpeed(-0.5);
         count++;
         
     }
     public void end(boolean interrupted) {
-        shooter.setSpeed(0);
+        shooter.setState(Shooter.shooterState.OFF);
         storage.setSpeed(0);
       }
 
