@@ -20,7 +20,7 @@ public class Shoot extends Command {
     @Override
     public void initialize() {
         count =0;
-        shooter.setState(Shooter.shooterState.BACKWARD);
+        shooter.setState(Shooter.shooterState.FORWARD);
 
     }
 

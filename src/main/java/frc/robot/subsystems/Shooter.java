@@ -36,10 +36,10 @@ public class Shooter extends SubsystemBase {
                 shooterMotor.set(0);
             }
             case FORWARD -> {
-                shooterMotor.set(0.5);
+                shooterMotor.set(0.15);
             }
             case BACKWARD -> {
-                shooterMotor.set(-0.5);
+                shooterMotor.set(-0.15);
             }
 
 
