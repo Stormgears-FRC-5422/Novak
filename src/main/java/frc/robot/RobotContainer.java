@@ -41,7 +41,6 @@ public class RobotContainer {
     VisionIdle visionIdle;
     AlignToAprilTag alignToAprilTag;
     Shoot shoot;
-    StorageCommand storageCommand;
     IntakeCommand intakeCommand;
 
     SolidworksJoystick joystick;
@@ -73,9 +72,8 @@ public class RobotContainer {
 
         if (Toggles.useIntake) {
             intake = new Intake();
-            intakeCommand = new IntakeCommand(intake);
             storage = new Storage();
-            storageCommand = new StorageCommand(storage);
+            intakeCommand = new IntakeCommand(intake, storage);
         }
 
         //To implement a trigger, make a function in the following classes: SolidworksJoystick, SolidworksLogitechController, SolidworksXboxController, SolidworksDummyController
@@ -96,7 +94,7 @@ public class RobotContainer {
         }
         if (Toggles.useShooter) {
             shooter = new Shooter();
-            shoot = new Shoot(shooter);
+            shoot = new Shoot(shooter, storage);
         }
 
         configureBindings();

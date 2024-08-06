@@ -6,15 +6,18 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Storage;
 
 public class IntakeCommand extends Command {
   /** Creates a new Intake. */
   private final Intake intake;
+  Storage storage;
   private int counter;
 
-  public IntakeCommand(Intake intake) {
+  public IntakeCommand(Intake intake, Storage storage) {
     this.intake = intake;
-    addRequirements(intake);
+    this.storage = storage;
+    addRequirements(intake, storage);
   }
 
   // Called when the command is initially scheduled.
@@ -28,6 +31,7 @@ public class IntakeCommand extends Command {
   @Override
   public void execute() {
     counter++;
+    storage.setSpeed(-0.5);
   }
 
   // Called once the command ends or is interrupted.

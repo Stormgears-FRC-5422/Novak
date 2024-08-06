@@ -2,14 +2,17 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Storage;
 import org.littletonrobotics.junction.Logger;
 
 public class Shoot extends Command {
     Shooter shooter;
     double count;
-    public Shoot(Shooter shooter) {
+    Storage storage;
+    public Shoot(Shooter shooter, Storage storage) {
         this.shooter = shooter;
-        addRequirements(shooter);
+        this.storage = storage;
+        addRequirements(shooter, storage);
 
     }
 
@@ -26,6 +29,7 @@ public class Shoot extends Command {
     @Override
     public void execute() {
         shooter.setSpeed(0.3);
+        storage.setSpeed(-0.5);
         count++;
         if(count%4==0){
             Logger.recordOutput("Shooter Applied speed:", shooter.getAppliedOutput());
