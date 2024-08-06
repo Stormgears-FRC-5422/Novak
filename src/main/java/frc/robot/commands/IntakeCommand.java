@@ -38,12 +38,12 @@ public class IntakeCommand extends Command {
   @Override
   public void end(boolean interrupted) {
     intake.setIntakeState(Intake.IntakeState.OFF);
+    storage.setSpeed(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-//    return counter > 50;
-    return false;
+    return counter >= 50;
   }
 }
