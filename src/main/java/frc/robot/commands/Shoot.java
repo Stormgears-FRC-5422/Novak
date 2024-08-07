@@ -21,6 +21,7 @@ public class Shoot extends Command {
     public void initialize() {
         count =0;
         shooter.setShooterState(Shooter.shooterState.FORWARD);
+        storage.setStorageState(Storage.StorageState.REVERSE);
 
     }
 
@@ -31,12 +32,12 @@ public class Shoot extends Command {
 
     @Override
     public void execute() {
-        storage.setSpeed(-0.5);
         count++;
         
     }
     public void end(boolean interrupted) {
         shooter.setShooterState(Shooter.shooterState.OFF);
+        storage.setStorageState(Storage.StorageState.OFF);
         storage.setSpeed(0);
       }
 
