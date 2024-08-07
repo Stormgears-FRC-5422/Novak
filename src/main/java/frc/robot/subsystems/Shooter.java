@@ -23,13 +23,13 @@ public class Shooter extends SubsystemBase {
     public Shooter() {
         setShooterState(shooterState.OFF);
         shooterMotor = new CANSparkMax(Constants.Shooter.shooterID, CANSparkLowLevel.MotorType.kBrushless);
-        m_alternateEncoder = shooterMotor.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, 8192);
+        m_alternateEncoder = shooterMotor.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, 512);
+
     }
 
     @Override
     public void periodic() {
         shooterMotor.set(speed);
-
         m_currentPosition = m_alternateEncoder.getPosition();
         System.out.println("alr encoder position: " + m_alternateEncoder.getPosition());
         System.out.println("alr encoder velocity: " + m_alternateEncoder.getVelocity());
