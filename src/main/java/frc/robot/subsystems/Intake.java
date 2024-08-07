@@ -50,7 +50,7 @@ public class Intake extends SubsystemBase {
         setSpeed(Constants.Intake.intakeSpeed);
       }
       case REVERSE ->{
-        setSpeed(Constants.Intake.intakeSpeed * -1);
+        setSpeed(-Constants.Intake.intakeSpeed);
       }
     }
   }

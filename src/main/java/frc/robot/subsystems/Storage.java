@@ -41,10 +41,10 @@ public class Storage extends SubsystemBase {
                 setSpeed(0.0);
             }
             case FORWARD -> {
-                setSpeed(0.5);
+                setSpeed(Constants.Storage.storageSpeed);
             }
             case REVERSE -> {
-                setSpeed(0.5 * -1);
+                setSpeed(-Constants.Storage.storageSpeed);
             }
         }
     }

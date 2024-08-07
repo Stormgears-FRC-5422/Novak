@@ -10,7 +10,7 @@ public class Shooter extends SubsystemBase {
 
     public enum shooterState {
         FORWARD,
-        BACKWARD,
+        REVERSE,
         OFF
     }
 
@@ -51,10 +51,10 @@ public class Shooter extends SubsystemBase {
                 setSpeed(0.0);
             }
             case FORWARD -> {
-                setSpeed(0.15);
+                setSpeed(Constants.Shooter.shooterSpeed);
             }
-            case BACKWARD -> {
-                setSpeed(-0.15);
+            case REVERSE -> {
+                setSpeed(-Constants.Shooter.shooterSpeed);
             }
 
 
