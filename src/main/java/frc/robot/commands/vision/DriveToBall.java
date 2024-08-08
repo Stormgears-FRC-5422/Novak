@@ -91,7 +91,7 @@ public class DriveToBall extends Command {
     }
     @Override
     public boolean isFinished() {
-        return count>10 || robotState.getShooterHeight() == RobotState.ShooterHeight.HIGH;
+        return count>50;
         //need to add if sensor detects the ball coming in
     }
     @Override
