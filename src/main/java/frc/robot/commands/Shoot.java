@@ -20,22 +20,25 @@ public class Shoot extends Command {
     @Override
     public void initialize() {
         count =0;
+        shooter.setShooterState(Shooter.shooterState.FORWARD);
+        storage.setStorageState(Storage.StorageState.REVERSE);
+
     }
 
     @Override
     public boolean isFinished() {
-        return count == 100;
+        return count >= 100;
     }
 
     @Override
     public void execute() {
-        shooter.setSpeed(0.3);
-        storage.setSpeed(-0.5);
         count++;
         
     }
     public void end(boolean interrupted) {
-        shooter.setSpeed(0);
+        shooter.setShooterState(Shooter.shooterState.OFF);
+        storage.setStorageState(Storage.StorageState.OFF);
+        storage.setSpeed(0);
       }
 
     

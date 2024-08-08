@@ -10,6 +10,7 @@ import frc.robot.subsystems.VisionSubsystem;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 import frc.robot.Constants;
+import frc.robot.LimelightHelpers;
 
 public class DriveToBall extends Command {
     VisionSubsystem visionSubsystem;
@@ -52,18 +53,16 @@ public class DriveToBall extends Command {
     @Override
     public void execute() {
         visionSubsystem.changeToDetectorPipeline();
-        double [] txty = visionSubsystem.getTXandTY();
+        double tx = LimelightHelpers.getTX("");
+        double ty = LimelightHelpers.getTY("");
         if (!visionSubsystem.hasValidTarget()) {
             return;
         }else {
-            tx = txty[0];
-            ty = txty[1];
             movement = translationController.calculate(TARGET - ty);
             rotation = rotationController.calculate(tx);
 
         }
-
-        rotation = 0;
+        
         if (visionSubsystem.getTennisBall().isPresent()) {
             System.out.println("tenny ball pres");
             if (tx > 0) {

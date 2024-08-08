@@ -57,12 +57,12 @@ public class AlignToAprilTag extends Command {
                     MiddleAprilTag = visionSubsystem.getAprilTags().get()[0].fiducialID == middleAprilTag ? visionSubsystem.getAprilTags().get()[0] : visionSubsystem.getAprilTags().get()[1];
                     RightAprilTag = visionSubsystem.getAprilTags().get()[1].fiducialID == rightAprilTag ? visionSubsystem.getAprilTags().get()[1] : visionSubsystem.getAprilTags().get()[0];
                     if (MiddleAprilTag != null) {
-
-                        distanceToTarget = MiddleAprilTag.getRobotPose_TargetSpace2D().getX();
-                        robotState.setDistanceToTarget(distanceToTarget);
                     } else {
                         robotState.setDistanceToTarget(0.0);
                     }
+
+                    distanceToTarget = MiddleAprilTag.getRobotPose_TargetSpace2D().getX();
+                    robotState.setDistanceToTarget(distanceToTarget);
                 } else {
                     ChassisSpeeds speeds = new ChassisSpeeds(0.0, 0.0, 0.0);
                     drivetrain.percentOutputDrive(speeds, false);
