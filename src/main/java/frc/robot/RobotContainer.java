@@ -64,11 +64,6 @@ public class RobotContainer {
             }
         }
 
-        if (Toggles.useVision) {
-            visionSubsystem = new VisionSubsystem(Vision.limelightId);
-            turnToNextBall = new TurnToNextBall(drivetrain, visionSubsystem);
-            driveToBall = new DriveToBall(drivetrain, visionSubsystem);
-        }
 
         if (Toggles.useIntake) {
             intake = new Intake();
@@ -83,7 +78,7 @@ public class RobotContainer {
         }
 
         if (Toggles.useVision) {
-//            visionSubsystem = new VisionSubsystem(Vision.limelightId);
+            visionSubsystem = new VisionSubsystem(Vision.limelightId);
             visionIdle = new VisionIdle(visionSubsystem);
             if (Toggles.useDrive) {
                 alignToAprilTag = new AlignToAprilTag(drivetrain, visionSubsystem);
@@ -102,6 +97,9 @@ public class RobotContainer {
 
     private void configureBindings() {
         System.out.println("configure button");
+        if (Toggles.useDrive&& Toggles.useVision) {
+            new Trigger(()->joystick.drivetoBall()).onTrue(driveToBall);
+        }
         if (Toggles.useIntake){
             new Trigger(()-> joystick.intake()).onTrue(intakeCommand);
         }
