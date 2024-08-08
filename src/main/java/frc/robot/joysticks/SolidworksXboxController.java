@@ -1,24 +1,19 @@
 package frc.robot.joysticks;
 
+import edu.wpi.first.wpilibj.Joystick;
+import frc.robot.commands.JoyStickDrive;
+import frc.utils.joysticks.DriveJoystick;
 import frc.utils.joysticks.StormXboxController;
+import frc.robot.joysticks.SolidworksJoystick;
 
 public class SolidworksXboxController extends SolidworksJoystick {
     StormXboxController controller;
 
-    SolidworksXboxController(int port) {
+    public SolidworksXboxController(int port) {
+        super(0);
         controller = new StormXboxController(port);
-    }
-
-    public double getWpiX() {
-        return controller.getWpiXSpeed();
-    }
-
-    public double getWpiY() {
-        return controller.getWpiYSpeed();
-    }
-
-    public double getOmegaSpeed() {
-        return controller.getOmegaSpeed();
+        this.joystick = controller;
+        this.driveJoystick = controller;
     }
 
     public boolean getRobotRelative() {
@@ -33,14 +28,17 @@ public class SolidworksXboxController extends SolidworksJoystick {
     public boolean drivetoBall() {
         return controller.getAButtonIsHeld();
     }
-
-    public boolean intake() { return controller.getYButtonIsHeld(); }
+    @Override
+    public boolean intake() {
+        return controller.getYButtonIsHeld();
+    }
 
     @Override
     public boolean relayStart() {
         return controller.getXisPressed();
 
     }
+
     @Override
     public boolean relayStop() {
         return controller.getAButtonIsHeld();

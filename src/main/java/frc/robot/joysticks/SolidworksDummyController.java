@@ -2,6 +2,7 @@ package frc.robot.joysticks;
 
 public class SolidworksDummyController extends SolidworksJoystick {
     SolidworksDummyController(int port) {
+        super(0);
 
     }
 

@@ -6,21 +6,16 @@ public class SolidworksLogitechController extends SolidworksJoystick {
     StormLogitechController controller;
 
     SolidworksLogitechController(int port) {
+        super(0);
         controller = new StormLogitechController(port);
     }
 
 
-    public double getWpiX() {
-        return controller.getWpiXSpeed();
-    }
+    
 
-    public double getWpiY() {
-        return controller.getWpiYSpeed();
-    }
+    
 
-    public double getOmegaSpeed() {
-        return controller.getOmegaSpeed();
-    }
+    
 
     public boolean getRobotRelative() {
 //        return controller.getRawButton(11);

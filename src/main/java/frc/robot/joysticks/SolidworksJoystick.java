@@ -1,23 +1,76 @@
 package frc.robot.joysticks;
 
-public abstract class SolidworksJoystick {
-    public abstract double getWpiX();
+import edu.wpi.first.wpilibj.Joystick;
+import frc.utils.joysticks.DriveJoystick;
+import frc.utils.joysticks.StormXboxController;
 
-    public abstract double getWpiY();
+public class SolidworksJoystick {
 
-    public abstract double getOmegaSpeed();
+    protected Joystick joystick;
+    protected DriveJoystick driveJoystick;
+    int port;
 
-    public abstract boolean getRobotRelative();
+    public SolidworksJoystick(int port){
+        this.port = port;
+    }
+    
+    public double getWpiX(){
+        if(driveJoystick!=null){
+        return driveJoystick.getWpiXSpeed();}
+        else{
+            return 0;
+        }
+    }
 
-    public abstract double getTurbo();
+    public double getWpiY(){
+        if(driveJoystick!=null){
+        return driveJoystick.getWpiYSpeed();}
+        else{
+            return 0;
+        }
+    }
 
-    public abstract boolean drivetoBall();
+    public double getOmegaSpeed() {
+        if(driveJoystick!=null){
+        return driveJoystick.getOmegaSpeed();}
+        else{
+        return 0;
+        }
+    }
 
-    public abstract boolean intake();
-    public abstract boolean relayStart();
 
-    public abstract boolean relayStop();
+    public boolean getRobotRelative(){
+        return (driveJoystick.getLeftTrigger()>0.2);
+    }
 
-    public abstract boolean relayOff();
-    public abstract boolean shoot();
+    public double getTurbo(){
+        return driveJoystick.getRightTrigger();
+    }
+    public boolean drivetoBall() {
+        return false;
+    }
+    public boolean relayStart() {
+        return false;
+    }
+
+    public boolean relayStop() {
+        return false;
+    }
+    public boolean relayOff() {
+        return false;
+    }
+    public boolean shoot() {
+        return false;
+    }
+    public boolean intake(){
+        return false;
+    }
+
+    
+
+
+
+
+
+    
 }
