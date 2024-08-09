@@ -55,7 +55,7 @@ public class DriveToBall extends Command {
         visionSubsystem.changeToDetectorPipeline();
         double tx = LimelightHelpers.getTX("");
         double ty = LimelightHelpers.getTY("");
-        if (!visionSubsystem.hasValidTarget()) {
+        if (!LimelightHelpers.getTV("")) {
             return;
         }else {
             movement = translationController.calculate(TARGET - ty);
