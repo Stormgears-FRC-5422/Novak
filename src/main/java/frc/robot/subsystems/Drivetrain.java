@@ -63,11 +63,15 @@ public class Drivetrain extends DrivetrainBase {
     @Override
     public void periodic() {
 
+
         states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
 
 //        System.out.println(states[0].angle.getDegrees());
 
         if (m_chassisSpeeds.vxMetersPerSecond != 0 || m_chassisSpeeds.vyMetersPerSecond != 0 || m_chassisSpeeds.omegaRadiansPerSecond != 0) {
+            System.out.println("omega " + m_chassisSpeeds.omegaRadiansPerSecond);
+            System.out.println("vy" + m_chassisSpeeds.vyMetersPerSecond);
+            System.out.println("vx" + m_chassisSpeeds.vxMetersPerSecond);
             m_frontLeftModule.setVelocity(states[0]);
             m_frontRightModule.setVelocity(states[1]);
             m_backRightModule.setVelocity(states[2]);
