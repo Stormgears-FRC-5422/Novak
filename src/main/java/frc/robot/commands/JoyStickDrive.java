@@ -101,6 +101,7 @@ public class JoyStickDrive extends Command {
         Logger.recordOutput("X chass", speeds.vxMetersPerSecond);
         Logger.recordOutput("y chass", speeds.vyMetersPerSecond);
         Logger.recordOutput("omeg chass", speeds.omegaRadiansPerSecond);
+        System.out.println("omega joy " + speeds.omegaRadiansPerSecond);
         drivetrain.percentOutputDrive(speeds, fieldRelative);
     }
 }

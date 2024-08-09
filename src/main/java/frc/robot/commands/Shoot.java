@@ -20,7 +20,7 @@ public class Shoot extends Command {
     @Override
     public void initialize() {
         count =0;
-        shooter.setShooterState(Shooter.shooterState.FORWARD);
+        shooter.setShooterState(Shooter.shooterState.REVERSE);
         storage.setStorageState(Storage.StorageState.REVERSE);
 
     }
