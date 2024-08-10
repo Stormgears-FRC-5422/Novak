@@ -38,7 +38,12 @@ public class Lights extends SubsystemBase {
     public final Color8Bit ORANGE_COLOR;
     public final Color8Bit YELLOW_COLOR;
     public final Color8Bit WHITE_COLOR;
+    public final Color8Bit TEAL_COLOR;
+    public final Color8Bit PINK_COLOR;
+    public final Color8Bit PURPLE_COLOR;
+
     public final Color8Bit NO_COLOR = new Color8Bit(0, 0, 0);
+
 
     private Segment LEFT_SIDE;
     private Segment RIGHT_SIDE;
@@ -55,7 +60,9 @@ public class Lights extends SubsystemBase {
         ORANGE_COLOR = scaleColor(new Color8Bit(255, 32, 0), Constants.Lights.brightness);
         YELLOW_COLOR = scaleColor(new Color8Bit(255, 255, 0), Constants.Lights.brightness);
         WHITE_COLOR = scaleColor(new Color8Bit(84, 84, 84), Constants.Lights.brightness);
-
+        PURPLE_COLOR = scaleColor(new Color8Bit(138,0,196), Constants.Lights.brightness);
+        PINK_COLOR = scaleColor(new Color8Bit(252,15,192), Constants.Lights.brightness);
+        TEAL_COLOR = scaleColor(new Color8Bit(0,128,128), Constants.Lights.brightness);
         initializeLights();
         System.out.println("Status Lights initializing ");
     }
@@ -65,8 +72,8 @@ public class Lights extends SubsystemBase {
         // Keep a counter to make updates less frequent
        // ++m_iteration;
 
-        setRingColor(LEFT_SIDE, ORANGE_COLOR);
-        setRingColor(RIGHT_SIDE, GREEN_COLOR);
+        setRingColor(LEFT_SIDE, PINK_COLOR);
+        setRingColor(RIGHT_SIDE, TEAL_COLOR);
 
         if (m_ledColorRequested) {
             m_ledLightStrip.setLEDData();
