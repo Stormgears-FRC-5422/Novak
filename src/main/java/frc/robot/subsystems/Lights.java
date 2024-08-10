@@ -1,13 +1,10 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.utils.lights.LightType;
 import frc.utils.lights.LEDLightStrip;
-import frc.utils.lights.LightType;
 import edu.wpi.first.wpilibj.util.Color8Bit;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 import java.util.ArrayList;
@@ -43,25 +40,11 @@ public class Lights extends SubsystemBase {
     public final Color8Bit WHITE_COLOR;
     public final Color8Bit NO_COLOR = new Color8Bit(0, 0, 0);
 
-    private Segment LEFT_SIDE_MAIN;
-    private Segment RIGHT_SIDE_MAIN;
-
-
-    private Color8Bit[] compassRing;
-    private Color8Bit[] visionXRing;
-    private Color8Bit[] visionYRing;
-    private Color8Bit[] visionRotationRing;
-    private Color8Bit[] leftOrientationRing;
-    private Color8Bit[] rightOrientationRing;
-    public Color8Bit sideColor;
-    public Color8Bit topColor;
-    private Color8Bit allianceColor;
-    private Color8Bit otherAllianceColor;
+    private Segment LEFT_SIDE;
+    private Segment RIGHT_SIDE;
 
     private LEDLightStrip m_ledLightStrip;
     boolean m_ledColorRequested;
-
-    private int ringLength;
 
     int count = 0;
 
@@ -73,8 +56,6 @@ public class Lights extends SubsystemBase {
         YELLOW_COLOR = scaleColor(new Color8Bit(255, 255, 0), Constants.Lights.brightness);
         WHITE_COLOR = scaleColor(new Color8Bit(84, 84, 84), Constants.Lights.brightness);
 
-        ringLength = Constants.Lights.sideMainLength;
-
         initializeLights();
         System.out.println("Status Lights initializing ");
     }
@@ -84,11 +65,12 @@ public class Lights extends SubsystemBase {
         // Keep a counter to make updates less frequent
        // ++m_iteration;
 
-        setRingColor(LEFT_SIDE_MAIN, sideColor);
-        setRingColor(RIGHT_SIDE_MAIN, sideColor);
+        setRingColor(LEFT_SIDE, ORANGE_COLOR);
+        setRingColor(RIGHT_SIDE, GREEN_COLOR);
 
         if (m_ledColorRequested) {
             m_ledLightStrip.setLEDData();
+            m_ledColorRequested = false;
         }
     }
 
@@ -99,11 +81,11 @@ public class Lights extends SubsystemBase {
         // These need to be added in the correct order. First string is closest to the roborio
         // Keep the assignment and segments.add together. This is necessary for the ring to have the right position
 
-        LEFT_SIDE_MAIN = new Segment(Constants.Lights.sideMainLength, LightType.getType(Constants.Lights.ringLEDType));
-        segments.add(LEFT_SIDE_MAIN);
+        LEFT_SIDE = new Segment(Constants.Lights.sideLength, LightType.getType(Constants.Lights.ringLEDType));
+        segments.add(LEFT_SIDE);
 
-        RIGHT_SIDE_MAIN = new Segment(Constants.Lights.sideMainLength, LightType.getType(Constants.Lights.ringLEDType));
-        segments.add(RIGHT_SIDE_MAIN);
+        RIGHT_SIDE = new Segment(Constants.Lights.sideLength, LightType.getType(Constants.Lights.ringLEDType));
+        segments.add(RIGHT_SIDE);
 
         m_ledLightStrip = new LEDLightStrip();
         for (Segment s : segments) {
