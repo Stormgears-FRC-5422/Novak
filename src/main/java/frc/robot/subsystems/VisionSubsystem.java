@@ -90,6 +90,4 @@ public class VisionSubsystem extends SubsystemBase {
         LimelightExtra limelightExtra = new LimelightExtra();
         return limelightExtra.hasValidTarget(limelight);
     }
-
-
 }

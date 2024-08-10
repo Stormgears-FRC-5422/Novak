@@ -18,6 +18,7 @@ import frc.robot.joysticks.SolidworksJoystickFactory;
 import frc.robot.Constants.*;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.Pigeon;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Storage;
@@ -42,6 +43,7 @@ public class RobotContainer {
     AlignToAprilTag alignToAprilTag;
     Shoot shoot;
     IntakeCommand intakeCommand;
+    Lights lights;
 
     SolidworksJoystick joystick;
 
@@ -91,6 +93,7 @@ public class RobotContainer {
             shooter = new Shooter();
             shoot = new Shoot(shooter, storage);
         }
+        lights = new Lights();
 
         configureBindings();
     }
