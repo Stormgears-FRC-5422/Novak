@@ -26,7 +26,7 @@ public class SolidworksXboxController extends SolidworksJoystick {
 
     @Override
     public boolean drivetoBall() {
-        return controller.getAButtonIsHeld();
+        return controller.getLeftLittleButtonIsHeld();
     }
     @Override
     public boolean intake() {
