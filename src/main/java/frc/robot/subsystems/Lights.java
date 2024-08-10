@@ -26,11 +26,6 @@ public class Lights extends SubsystemBase {
         }
     }
 
-    // private final RobotState m_robotState;
-    // private Shooter.ShooterState m_shooterState;
-    //private StateAlliance m_alliance;
-//        private int m_iteration;
-//        private Pose2d cameraTestPose = new Pose2d(15.0423, 5.467, Rotation2d.fromDegrees(0));
 
     public final Color8Bit RED_COLOR;
     public final Color8Bit GREEN_COLOR;
@@ -41,7 +36,7 @@ public class Lights extends SubsystemBase {
     public final Color8Bit TEAL_COLOR;
     public final Color8Bit PINK_COLOR;
     public final Color8Bit PURPLE_COLOR;
-    private int counter;
+    private int runwayIndex = 0;
 
     public final Color8Bit NO_COLOR = new Color8Bit(0, 0, 0);
 
@@ -71,18 +66,12 @@ public class Lights extends SubsystemBase {
     public void periodic() {
         // Lights may be expensive to check, and some updates can come too fast.
         // Keep a counter to make updates less frequent
-       // ++m_iteration;
-
         setRingColor(LEFT_SIDE, PINK_COLOR);
         setRingColor(RIGHT_SIDE, PINK_COLOR);
-
-        if (m_ledColorRequested) {
-            m_ledLightStrip.setLEDData();
-            m_ledColorRequested = false;
-        }
-
-        m_ledLightStrip.setLEDColor(1, 1, TEAL_COLOR);
+        runway();
+        m_ledLightStrip.setLEDData();
     }
+
 
     public void initializeLights() {
         System.out.println("init lights function");
@@ -116,8 +105,22 @@ public class Lights extends SubsystemBase {
         m_ledLightStrip.setLEDColor(s.number, c);
     }
 
-    //private void setAlternatingRingColor(Segment s, Color8Bit c1, Color8Bit c2) {
-       // m_ledLightStrip.setAlternatingLEDColor(s.number, c1, c2);
-   // }
+
+
+    private void runway (){
+        m_ledLightStrip.setLEDColor(0,(runwayIndex) % LEFT_SIDE.numberOfLEDs, TEAL_COLOR);
+        m_ledLightStrip.setLEDColor(0,(runwayIndex+1) % LEFT_SIDE.numberOfLEDs, TEAL_COLOR);
+        m_ledLightStrip.setLEDColor(0,(runwayIndex+2) % LEFT_SIDE.numberOfLEDs, TEAL_COLOR);
+        m_ledLightStrip.setLEDColor(0,(LEFT_SIDE.numberOfLEDs + runwayIndex-1) % LEFT_SIDE.numberOfLEDs, PURPLE_COLOR);
+        m_ledLightStrip.setLEDColor(0,(LEFT_SIDE.numberOfLEDs + runwayIndex-2) % LEFT_SIDE.numberOfLEDs, BLUE_COLOR);
+        m_ledLightStrip.setLEDColor(0,(LEFT_SIDE.numberOfLEDs + runwayIndex-3) % LEFT_SIDE.numberOfLEDs, GREEN_COLOR);
+        m_ledLightStrip.setLEDColor(1,(runwayIndex) % LEFT_SIDE.numberOfLEDs, TEAL_COLOR);
+        m_ledLightStrip.setLEDColor(1,(runwayIndex+1) % LEFT_SIDE.numberOfLEDs, TEAL_COLOR);
+        m_ledLightStrip.setLEDColor(1,(runwayIndex+2) % LEFT_SIDE.numberOfLEDs, TEAL_COLOR);
+        m_ledLightStrip.setLEDColor(1,(LEFT_SIDE.numberOfLEDs + runwayIndex-1) % LEFT_SIDE.numberOfLEDs, PURPLE_COLOR);
+        m_ledLightStrip.setLEDColor(1,(LEFT_SIDE.numberOfLEDs + runwayIndex-2) % LEFT_SIDE.numberOfLEDs, BLUE_COLOR);
+        m_ledLightStrip.setLEDColor(1,(LEFT_SIDE.numberOfLEDs + runwayIndex-3) % LEFT_SIDE.numberOfLEDs, GREEN_COLOR);
+        runwayIndex += 1;
+    }
 
 }
