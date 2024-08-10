@@ -1,7 +1,6 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.drive;
 
 import com.ctre.phoenix6.hardware.TalonFX;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DiagnosticDrive extends DrivetrainBase {
     TalonFX m_frontLeftDrive, m_frontRightDrive, m_backLeftDrive, m_backRightDrive;

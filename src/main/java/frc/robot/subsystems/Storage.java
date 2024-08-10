@@ -14,25 +14,23 @@ public class Storage extends SubsystemBase {
         REVERSE,
     }
 
-    private final CANSparkMax storageMotor;
-    private double storageMotorSpeed;
-    private StorageState storageState;
+    final CANSparkMax storageMotor;
+    double storageMotorSpeed;
+    StorageState storageState;
 
     public Storage() {
         storageMotor = new CANSparkMax(Constants.Storage.storageID, CANSparkLowLevel.MotorType.kBrushless);
-        storageMotor.setInverted(true);
+        storageMotor.setInverted(false);
         setStorageState(StorageState.OFF);
     }
 
-    public void setSpeed(double speed) {
+    void setSpeed(double speed) {
         storageMotorSpeed = speed;
     }
 
     public void periodic() {
         storageMotor.set(storageMotorSpeed);
     }
-
-
 
     public void setStorageState(StorageState state) {
         this.storageState = state;

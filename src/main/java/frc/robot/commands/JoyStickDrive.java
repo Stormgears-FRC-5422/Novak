@@ -4,13 +4,9 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.Constants.ButtonBoard;
 import frc.robot.RobotState;
 import frc.robot.joysticks.SolidworksJoystick;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.DrivetrainBase;
-import frc.utils.LoggerWrapper;
-import org.littletonrobotics.junction.AutoLogOutput;
+import frc.robot.subsystems.drive.DrivetrainBase;
 import org.littletonrobotics.junction.Logger;
 
 import java.util.function.BooleanSupplier;
@@ -101,7 +97,7 @@ public class JoyStickDrive extends Command {
         Logger.recordOutput("X chass", speeds.vxMetersPerSecond);
         Logger.recordOutput("y chass", speeds.vyMetersPerSecond);
         Logger.recordOutput("omeg chass", speeds.omegaRadiansPerSecond);
-        System.out.println("omega joy " + speeds.omegaRadiansPerSecond);
+//        System.out.println("omega joy " + speeds.omegaRadiansPerSecond);
         drivetrain.percentOutputDrive(speeds, fieldRelative);
     }
 }

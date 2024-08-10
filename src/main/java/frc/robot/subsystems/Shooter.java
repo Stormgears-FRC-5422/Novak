@@ -7,8 +7,7 @@ import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
 
-
-    public enum shooterState {
+    public enum ShooterState {
         FORWARD,
         REVERSE,
         OFF
@@ -17,35 +16,33 @@ public class Shooter extends SubsystemBase {
     private final CANSparkMax shooterMotor;
     private double m_currentPosition;
     private final RelativeEncoder m_alternateEncoder;
-    shooterState shooterState;
+    ShooterState shooterState;
     double speed;
 
     public Shooter() {
         setShooterState(shooterState.OFF);
         shooterMotor = new CANSparkMax(Constants.Shooter.shooterID, CANSparkLowLevel.MotorType.kBrushless);
+        shooterMotor.setInverted(true);
         m_alternateEncoder = shooterMotor.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, 512);
-
     }
 
     @Override
     public void periodic() {
         shooterMotor.set(speed);
         m_currentPosition = m_alternateEncoder.getPosition();
-        System.out.println("alr encoder position: " + m_alternateEncoder.getPosition());
-        System.out.println("alr encoder velocity: " + m_alternateEncoder.getVelocity());
+//        System.out.println("alr encoder position: " + m_alternateEncoder.getPosition());
+//        System.out.println("alr encoder velocity: " + m_alternateEncoder.getVelocity());
     }
 
     public double getCurrentPosition() {
         return m_currentPosition;
     }
 
-
-
     public double getDegreesFromPosition(double position) {
         return position / (Constants.Shooter.gearratio / 360.0);
     }
 
-    public void setShooterState(shooterState state) {
+    public void setShooterState(ShooterState state) {
         switch (state) {
             case OFF -> {
                 setSpeed(0.0);
@@ -56,17 +53,13 @@ public class Shooter extends SubsystemBase {
             case REVERSE -> {
                 setSpeed(-Constants.Shooter.shooterSpeed);
             }
-
-
         }
     }
+
     public double getAppliedOutput() {
         return shooterMotor.getAppliedOutput();
-
     }
-    public void setSpeed(double speed) {
+    void setSpeed(double speed) {
         this.speed = speed;
     }
-
-
 }

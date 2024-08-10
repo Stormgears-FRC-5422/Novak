@@ -24,7 +24,7 @@ public class IntakeCommand extends Command {
   @Override
   public void initialize() {
     intake.setIntakeState(Intake.IntakeState.FORWARD);
-    storage.setStorageState(Storage.StorageState.REVERSE);
+    storage.setStorageState(Storage.StorageState.FORWARD);
     counter = 0;
   }
 
@@ -39,7 +39,6 @@ public class IntakeCommand extends Command {
   public void end(boolean interrupted) {
     intake.setIntakeState(Intake.IntakeState.OFF);
     storage.setStorageState(Storage.StorageState.OFF);
-    storage.setSpeed(0);
   }
 
   // Returns true when the command should end.

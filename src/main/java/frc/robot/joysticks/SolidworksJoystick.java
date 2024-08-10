@@ -66,7 +66,13 @@ public class SolidworksJoystick {
         return false;
     }
 
-    
+    public boolean ballPathForward(){
+        return false;
+    }
+    public boolean ballPathReverse(){
+        return false;
+    }
+
 
 
 

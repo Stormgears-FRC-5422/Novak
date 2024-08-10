@@ -63,10 +63,10 @@ public class Lights extends SubsystemBase {
     public void periodic() {
         // Lights may be expensive to check, and some updates can come too fast.
         // Keep a counter to make updates less frequent
-       // ++m_iteration;
+        // ++m_iteration;
 
-        setRingColor(LEFT_SIDE, ORANGE_COLOR);
-        setRingColor(RIGHT_SIDE, GREEN_COLOR);
+        setSegmentColor(LEFT_SIDE, ORANGE_COLOR);
+        setSegmentColor(RIGHT_SIDE, GREEN_COLOR);
 
         if (m_ledColorRequested) {
             m_ledLightStrip.setLEDData();
@@ -102,7 +102,7 @@ public class Lights extends SubsystemBase {
     }
 
 
-    private void setRingColor(Segment s, Color8Bit c) {
+    private void setSegmentColor(Segment s, Color8Bit c) {
         m_ledLightStrip.setLEDColor(s.number, c);
     }
 

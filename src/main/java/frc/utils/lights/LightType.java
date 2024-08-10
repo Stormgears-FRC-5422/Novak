@@ -11,5 +11,6 @@ public enum LightType {
       default -> RGB;
     };
   }
+
 }
 

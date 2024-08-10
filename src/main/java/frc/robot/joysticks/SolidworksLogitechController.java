@@ -10,17 +10,9 @@ public class SolidworksLogitechController extends SolidworksJoystick {
         controller = new StormLogitechController(port);
     }
 
-
-    
-
-    
-
-    
-
     public boolean getRobotRelative() {
 //        return controller.getRawButton(11);
         return false;
-
     }
 
     public double getTurbo() {
@@ -32,7 +24,7 @@ public class SolidworksLogitechController extends SolidworksJoystick {
         return false;
     }
 
-    public boolean intake() { return false; }
+    public boolean intake() { return controller.getRawButton(2); }
 
     @Override
     public boolean relayStart() {
@@ -51,6 +43,9 @@ public class SolidworksLogitechController extends SolidworksJoystick {
 
     @Override
     public boolean shoot() {
-        return false;
+        return controller.getRawButton(1);
     }
+
+    public boolean ballPathForward() { return controller.getRawButton(5);}
+    public boolean ballPathReverse() { return controller.getRawButton(6);}
 }

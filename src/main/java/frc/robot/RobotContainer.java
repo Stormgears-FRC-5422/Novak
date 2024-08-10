@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.ADIS16448_IMU;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.*;
@@ -23,8 +22,9 @@ import frc.robot.subsystems.Pigeon;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Storage;
 import frc.robot.subsystems.VisionSubsystem;
-
-import java.util.function.ToDoubleBiFunction;
+import frc.robot.subsystems.drive.DrivetrainBase;
+import frc.robot.subsystems.drive.DrivetrainFactory;
+import frc.robot.subsystems.drive.IllegalDriveTypeException;
 
 import static frc.robot.Constants.ButtonBoard.driveJoystickPort;
 
@@ -41,8 +41,10 @@ public class RobotContainer {
     DriveToBall driveToBall;
     VisionIdle visionIdle;
     AlignToAprilTag alignToAprilTag;
-    Shoot shoot;
+    ShootCommand shootCommand;
     IntakeCommand intakeCommand;
+    BallPathCommand ballPathCommandForward;
+    BallPathCommand ballPathCommandReverse;
     Lights lights;
 
     SolidworksJoystick joystick;
@@ -50,7 +52,6 @@ public class RobotContainer {
     private Relaytest relaytest;
 
     public RobotContainer() throws IllegalJoystickTypeException, IllegalDriveTypeException {
-
         if (Toggles.useController) {
             System.out.println("Making 1st joystick!");
             joystick = SolidworksJoystickFactory.getInstance(ButtonBoard.driveJoystick, driveJoystickPort);
@@ -64,13 +65,6 @@ public class RobotContainer {
                 JoyStickDrive driveWithJoystick = new JoyStickDrive(drivetrain, joystick);
                 drivetrain.setDefaultCommand(driveWithJoystick);
             }
-        }
-
-
-        if (Toggles.useIntake) {
-            intake = new Intake();
-            storage = new Storage();
-            intakeCommand = new IntakeCommand(intake, storage);
         }
 
         //To implement a trigger, make a function in the following classes: SolidworksJoystick, SolidworksLogitechController, SolidworksXboxController, SolidworksDummyController
@@ -89,11 +83,26 @@ public class RobotContainer {
             }
 
         }
+
+        if (Toggles.useIntake) {
+            intake = new Intake();
+            storage = new Storage();
+            intakeCommand = new IntakeCommand(intake, storage);
+        }
+
         if (Toggles.useShooter) {
             shooter = new Shooter();
-            shoot = new Shoot(shooter, storage);
+            shootCommand = new ShootCommand(shooter, storage);
         }
-        lights = new Lights();
+
+        if (Toggles.useShooter && Toggles.useIntake) {
+            ballPathCommandForward = new BallPathCommand(intake, storage, shooter, true);
+            ballPathCommandReverse = new BallPathCommand(intake, storage, shooter, false);
+        }
+
+        if (Toggles.useStatusLights) {
+            lights = new Lights();
+        }
 
         configureBindings();
     }
@@ -109,8 +118,13 @@ public class RobotContainer {
             //new Trigger(()-> joystick.intake()).onTrue(new ParallelCommandGroup(intakeCommand, storageCommand));
         //}
         if (Toggles.useShooter){
-            new Trigger(()-> joystick.shoot()).onTrue(shoot);
+            new Trigger(()-> joystick.shoot()).onTrue(shootCommand);
             //new Trigger(()-> joystick.shoot()).onTrue(new ParallelCommandGroup(shoot, storageCommand));
+        }
+
+        if (Toggles.useShooter && Toggles.useIntake) {
+            new Trigger(()-> joystick.ballPathForward()).whileTrue(ballPathCommandForward);
+            new Trigger(()-> joystick.ballPathReverse()).whileTrue(ballPathCommandReverse);
         }
 
         Relaytest relaycontroller = new Relaytest();

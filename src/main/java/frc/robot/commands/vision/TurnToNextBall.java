@@ -3,8 +3,7 @@ package frc.robot.commands.vision;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotState;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.DrivetrainBase;
+import frc.robot.subsystems.drive.DrivetrainBase;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.Constants;
 
