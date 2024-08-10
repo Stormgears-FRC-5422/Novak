@@ -41,6 +41,7 @@ public class Lights extends SubsystemBase {
     public final Color8Bit TEAL_COLOR;
     public final Color8Bit PINK_COLOR;
     public final Color8Bit PURPLE_COLOR;
+    private int counter;
 
     public final Color8Bit NO_COLOR = new Color8Bit(0, 0, 0);
 
@@ -73,12 +74,14 @@ public class Lights extends SubsystemBase {
        // ++m_iteration;
 
         setRingColor(LEFT_SIDE, PINK_COLOR);
-        setRingColor(RIGHT_SIDE, TEAL_COLOR);
+        setRingColor(RIGHT_SIDE, PINK_COLOR);
 
         if (m_ledColorRequested) {
             m_ledLightStrip.setLEDData();
             m_ledColorRequested = false;
         }
+
+        m_ledLightStrip.setLEDColor(1, 1, TEAL_COLOR);
     }
 
     public void initializeLights() {
