@@ -61,7 +61,7 @@ public class Lights extends SubsystemBase {
         YELLOW_COLOR = scaleColor(new Color8Bit(255, 255, 0), Constants.Lights.brightness);
         WHITE_COLOR = scaleColor(new Color8Bit(84, 84, 84), Constants.Lights.brightness);
         PURPLE_COLOR = scaleColor(new Color8Bit(138,0,196), Constants.Lights.brightness);
-        PINK_COLOR = scaleColor(new Color8Bit(255,82,171), Constants.Lights.brightness);
+        PINK_COLOR = scaleColor(new Color8Bit(255,5,90), Constants.Lights.brightness);
         TEAL_COLOR = scaleColor(new Color8Bit(0,128,128), Constants.Lights.brightness);
         initializeLights();
         System.out.println("Status Lights initializing ");
