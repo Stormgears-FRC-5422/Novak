@@ -10,45 +10,46 @@ public class SolidworksJoystick {
     protected DriveJoystick driveJoystick;
     int port;
 
-    public SolidworksJoystick(int port){
+    public SolidworksJoystick(int port) {
         this.port = port;
     }
-    
-    public double getWpiX(){
-        if(driveJoystick!=null){
-        return driveJoystick.getWpiXSpeed();}
-        else{
+
+    public double getWpiX() {
+        if (driveJoystick != null) {
+            return driveJoystick.getWpiXSpeed();
+        } else {
             return 0;
         }
     }
 
-    public double getWpiY(){
-        if(driveJoystick!=null){
-        return driveJoystick.getWpiYSpeed();}
-        else{
+    public double getWpiY() {
+        if (driveJoystick != null) {
+            return driveJoystick.getWpiYSpeed();
+        } else {
             return 0;
         }
     }
 
     public double getOmegaSpeed() {
-        if(driveJoystick!=null){
-        return driveJoystick.getOmegaSpeed();}
-        else{
-        return 0;
+        if (driveJoystick != null) {
+            return driveJoystick.getOmegaSpeed();
+        } else {
+            return 0;
         }
     }
 
-
-    public boolean getRobotRelative(){
-        return (driveJoystick.getLeftTrigger()>0.2);
+    public boolean getRobotRelative() {
+        return (driveJoystick.getLeftTrigger() > 0.2);
     }
 
-    public double getTurbo(){
+    public double getTurbo() {
         return driveJoystick.getRightTrigger();
     }
+
     public boolean drivetoBall() {
         return false;
     }
+
     public boolean relayStart() {
         return false;
     }
@@ -56,27 +57,25 @@ public class SolidworksJoystick {
     public boolean relayStop() {
         return false;
     }
+
     public boolean relayOff() {
         return false;
     }
+
     public boolean shoot() {
         return false;
     }
-    public boolean intake(){
+
+    public boolean intake() {
         return false;
     }
 
-    public boolean ballPathForward(){
-        return false;
-    }
-    public boolean ballPathReverse(){
+    public boolean ballPathForward() {
         return false;
     }
 
+    public boolean ballPathReverse() {
+        return false;
+    }
 
-
-
-
-
-    
 }

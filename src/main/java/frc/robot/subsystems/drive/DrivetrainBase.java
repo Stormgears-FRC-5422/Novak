@@ -22,7 +22,7 @@ public abstract class DrivetrainBase extends SubsystemBase {
         m_maxVelocityMetersPerSecond = maxVelocityMetersPerSecond;
         m_maxAngularVelocityRadiansPerSecond = maxAngularVelocityRadiansPerSecond;
         System.out.println("MaxDRIVEVal: " + m_maxVelocityMetersPerSecond);
-        System.out.println("MaxANgleVal: " + m_maxAngularVelocityRadiansPerSecond);
+        System.out.println("MaxANGLEVal: " + m_maxAngularVelocityRadiansPerSecond);
     }
 
 

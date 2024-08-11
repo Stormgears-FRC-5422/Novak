@@ -46,10 +46,11 @@ public class StormProp {
         FileInputStream inputStream = null;
         try {
             inputStream = new FileInputStream(configFile);
-            properties.load(inputStream);
             System.out.println("*****************");
             System.out.println("Loading Properties");
             System.out.println("*****************");
+            properties.load(inputStream);
+            // System.out.println(properties.toString());
         } catch (IOException e) {
             System.out.println("Using backup config file");
             try {
@@ -112,7 +113,12 @@ public class StormProp {
         FileInputStream OverrideInputStream = null;
         try {
             OverrideInputStream = new FileInputStream(overrideConfigFile);
+
+            System.out.println("*****************");
+            System.out.println("Loading Override Properties from " + overrideConfigFile);
+            System.out.println("*****************");
             overrideProperties.load(OverrideInputStream);
+            // System.out.println(overrideProperties.toString());
         } catch (IOException e) {
             System.out.println("!!! No override file detected !!!");
         }
@@ -132,11 +138,19 @@ public class StormProp {
 
         // Ignore the sim overrides file unless we are in simulation!
         if (!RobotBase.isSimulation()) {
+            System.out.println("Not in simulation mode");
             simInitialized = true;
             return;
         }
 
+        System.out.println("In simulation mode");
         String simName = properties.getProperty("simOverrideOverride");
+
+        if (simName == null || simName == "") {
+            simInitialized = true;
+            return;
+        }
+
         simName = removeCast(simName);
 
         System.out.println("Using simulation override file " + simName);
@@ -161,16 +175,29 @@ public class StormProp {
     }
 
     private static String removeCast(String value) {
+        if (debug) System.out.println("remove cast for value: " + value );
         return value.substring(value.indexOf(")") + 1).trim();
     }
+
     private static String getPropString(String key) {
         if (!initialized) init();
         if (!overrideInitialized) overrideInit();
         if (!simInitialized) simInit();
 
-        if (simProperties.containsKey(key)) return(removeCast(simProperties.getProperty(key)));
-        if (overrideProperties.containsKey(key)) return(removeCast(overrideProperties.getProperty(key)));
-        if (properties.containsKey(key)) return(removeCast(properties.getProperty(key)));
+        if (simProperties.containsKey(key)) {
+            if (debug) System.out.println("trying to use simOverride for property " + key);
+            return(removeCast(simProperties.getProperty(key)));
+        }
+
+        if (overrideProperties.containsKey(key)) {
+            if (debug) System.out.println("trying to use Override for property " + key);
+            return(removeCast(overrideProperties.getProperty(key)));
+        }
+
+        if (properties.containsKey(key)) {
+            if (debug) System.out.println("trying to use property " + key);
+            return(removeCast(properties.getProperty(key)));
+        }
 
         return "";
     }
@@ -201,7 +228,7 @@ public class StormProp {
                 return (defaultVal);
             }
         } catch (Exception e) {
-            System.out.println("WARNING: default used for key " + key);
+            System.out.println("CATCH: default used for key " + key + " : " + e.getMessage());
             return (defaultVal);
         }
     }
@@ -230,7 +257,7 @@ public class StormProp {
                 return (defaultVal);
             }
         } catch (Exception e) {
-            System.out.println("WARNING: default used for key " + key);
+            System.out.println("CATCH: default used for key " + key + " : " + e.getMessage());
             return (defaultVal);
         }
     }
@@ -260,7 +287,7 @@ public class StormProp {
                 return (defaultVal);
             }
         } catch (Exception e) {
-            System.out.println("WARNING: default used for key " + key);
+            System.out.println("CATCH: default used for key " + key + " : " + e.getMessage());
             return (defaultVal);
         }
     }
@@ -290,7 +317,8 @@ public class StormProp {
                 return (defaultVal);
             }
         } catch (Exception e) {
-            System.out.println("WARNING: default used for key " + key);
+            System.out.println("CATCH: default used for key " + key + " : " + e.getMessage());
+            // e.printStackTrace();
             return (defaultVal);
         }
     }

@@ -9,6 +9,7 @@ public class DrivetrainFactory {
             switch (driveType.toLowerCase()) {
                 case "drivetrain" -> instance = new Drivetrain();
                 case "diagnosticdrive" -> instance = new DiagnosticDrive();
+                case "ctrdrivetrain" -> instance = new CTRDrivetrain();
                 default -> throw new IllegalDriveTypeException("Illegal Drive Type: " + driveType + " ---!");
             }
         }

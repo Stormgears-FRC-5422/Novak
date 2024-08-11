@@ -25,7 +25,6 @@ public class JoyStickDrive extends Command {
     private boolean m_flipJoystick = false;
     private final SlewRateLimiter speedScaleLimiter = new SlewRateLimiter(0.5);
 
-
     public JoyStickDrive(DrivetrainBase drivetrain,
                          SolidworksJoystick joystick) {
         this.drivetrain = drivetrain;
@@ -38,8 +37,6 @@ public class JoyStickDrive extends Command {
         turboSupplier = joystick::getTurbo;
 
         addRequirements(drivetrain);
-
-
     }
 
     @Override
@@ -92,8 +89,8 @@ public class JoyStickDrive extends Command {
 //                speedScaleLimiter.calculate(omega));
         }
 
-//        System.out.println(speeds.vxMetersPerSecond + " " + speeds.vyMetersPerSecond + " " + speeds.omegaRadiansPerSecond
-//        );
+        // System.out.println(speeds.vxMetersPerSecond + " " + speeds.vyMetersPerSecond + " " + speeds.omegaRadiansPerSecond);
+
         Logger.recordOutput("X chass", speeds.vxMetersPerSecond);
         Logger.recordOutput("y chass", speeds.vyMetersPerSecond);
         Logger.recordOutput("omeg chass", speeds.omegaRadiansPerSecond);

@@ -1,16 +1,12 @@
 package frc.robot.joysticks;
 
-import edu.wpi.first.wpilibj.Joystick;
-import frc.robot.commands.JoyStickDrive;
-import frc.utils.joysticks.DriveJoystick;
 import frc.utils.joysticks.StormXboxController;
-import frc.robot.joysticks.SolidworksJoystick;
 
 public class SolidworksXboxController extends SolidworksJoystick {
     StormXboxController controller;
 
     public SolidworksXboxController(int port) {
-        super(0);
+        super(port);
         controller = new StormXboxController(port);
         this.joystick = controller;
         this.driveJoystick = controller;
