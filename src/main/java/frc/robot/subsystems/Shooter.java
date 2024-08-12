@@ -31,7 +31,7 @@ public class Shooter extends SubsystemBase {
         m_alternateEncoder = shooterMotor.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, Constants.Shooter.encoderTicksPerRev);
 
         gateMotor = new StormSpark(Constants.Shooter.shooterID, CANSparkLowLevel.MotorType.kBrushed, StormSpark.MotorKind.k550);
-        gateMotor.setSmartCurrentLimit()
+        gateMotor.setSmartCurrentLimit(1);
         gateMotor.setIdleMode(CANSparkBase.IdleMode.kBrake);
 
         setShooterState(ShooterState.OFF);
