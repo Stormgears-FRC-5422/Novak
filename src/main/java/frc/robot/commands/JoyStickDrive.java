@@ -12,7 +12,7 @@ import org.littletonrobotics.junction.Logger;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
-public class JoyStickDrive extends Command {
+public class JoyStickDrive extends StormCommand {
     private DrivetrainBase drivetrain;
     private final DoubleSupplier txSupplier;
     private final DoubleSupplier tySupplier;
@@ -41,6 +41,7 @@ public class JoyStickDrive extends Command {
 
     @Override
     public void initialize() {
+        super.initialize();
     }
 
     @Override

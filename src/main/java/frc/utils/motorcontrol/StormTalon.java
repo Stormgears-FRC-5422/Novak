@@ -9,7 +9,6 @@ public class StormTalon extends TalonFX implements MotorController {
     private ControlRequest rotationDemand;
     private ControlRequest driveDemand;
 
-
     public StormTalon(int deviceNumber) {
         super(deviceNumber);
     }
@@ -47,6 +46,11 @@ public class StormTalon extends TalonFX implements MotorController {
 
     @Override
     public void getAnglePosition() {
+
+    }
+
+    @Override
+    public void setCurrentLimit(int currentLimit) {
 
     }
 

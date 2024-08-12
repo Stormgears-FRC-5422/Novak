@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.revrobotics.*;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.utils.motorcontrol.StormSpark;
 
 public class Intake extends SubsystemBase {
   public enum IntakeState {
@@ -15,33 +16,23 @@ public class Intake extends SubsystemBase {
     REVERSE,
   }
 
-  private final CANSparkMax intakeMotor;
+  private final StormSpark intakeMotor;
   private double intakeMotorSpeed;
-  private IntakeState intakeState;
 
   /** Creates a new Intake. */
   public Intake() {
     // used fake id, change to real motor id later
-    intakeMotor = new CANSparkMax(Constants.Intake.intakeID, CANSparkLowLevel.MotorType.kBrushless);
+    intakeMotor = new StormSpark(Constants.Intake.intakeID, CANSparkLowLevel.MotorType.kBrushless, StormSpark.MotorKind.k550);
     intakeMotor.setInverted(true);
     setIntakeState(IntakeState.OFF);
   }
 
-  public void setSpeed(double speed) {
-    intakeMotorSpeed = speed;
-  }
-
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
     intakeMotor.set(intakeMotorSpeed);
-
-
-
   }
 
   public void setIntakeState(IntakeState state) {
-    this.intakeState = state;
     switch (state) {
       case OFF -> {
         setSpeed(0.0);
@@ -55,6 +46,7 @@ public class Intake extends SubsystemBase {
     }
   }
 
-
-
+  private void setSpeed(double speed) {
+    intakeMotorSpeed = speed;
+  }
 }

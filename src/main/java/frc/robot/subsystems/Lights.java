@@ -66,8 +66,8 @@ public class Lights extends SubsystemBase {
     public void periodic() {
         // Lights may be expensive to check, and some updates can come too fast.
         // Keep a counter to make updates less frequent
-        setSegmentColor(LEFT_SIDE, ORANGE_COLOR);
-        setSegmentColor(RIGHT_SIDE, GREEN_COLOR);
+        setSegmentColor(LEFT_SIDE, PINK_COLOR);
+        setSegmentColor(RIGHT_SIDE, PINK_COLOR);
         runway();
         m_ledLightStrip.setLEDData();
     }

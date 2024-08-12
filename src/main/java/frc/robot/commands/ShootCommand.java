@@ -7,13 +7,11 @@ import frc.robot.subsystems.Storage;
 import org.littletonrobotics.junction.AutoLogOutput;
 import frc.robot.subsystems.Storage;
 
-//50, 150
-public class ShootCommand extends Command {
+public class ShootCommand extends StormCommand {
     @AutoLogOutput(key = "shooter_speed")
     Shooter shooter;
     Storage storage;
     double count;
-
 
     public ShootCommand(Shooter shooter, Storage storage) {
         this.shooter = shooter;
@@ -22,22 +20,18 @@ public class ShootCommand extends Command {
     }
 
     @Override
-    
     public void initialize() {
+        super.initialize();
+
         count = 0;
-
-        storage.setRelayState(Storage.RelayState.CLOSE); //by default
-
         shooter.setShooterState(Shooter.ShooterState.WARMUP);
-
     }
+
     @Override
     public void execute() {
         count++;
-
         if (count > 50) {
             shooter.setShooterState(Shooter.ShooterState.FORWARD);
-            storage.setRelayState(Storage.RelayState.OPEN);
         }
     }
 
@@ -46,12 +40,8 @@ public class ShootCommand extends Command {
         return count >= 200;
     }
 
-
-
     public void end(boolean interrupted) {
         shooter.setShooterState(Shooter.ShooterState.OFF);
         storage.setStorageState(Storage.StorageState.OFF);
-
-        storage.setRelayState(Storage.RelayState.CLOSE);
     }
 }

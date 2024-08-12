@@ -4,6 +4,9 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.REVLibError;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
+import jdk.jfr.Description;
+
+import java.lang.annotation.Documented;
 
 import static frc.robot.Constants.*;
 import static java.lang.Math.max;
@@ -26,20 +29,28 @@ public class StormSpark extends CANSparkMax implements MotorController {
 
         switch (motorKind) {
             case kNeo:
-                currentLimit = (int) SparkMax.CurrentLimit;
+                currentLimit = SparkMax.CurrentLimit;
                 break;
             case k550:
-                currentLimit = (int) SparkMax.Neo550CurrentLimit;
+                currentLimit = SparkMax.Neo550CurrentLimit;
                 break;
+            case kGeneric:
+                currentLimit = 0; // you must set this explicitly
         }
 
         restoreFactoryDefaults();
+        // Smart Current Limit does not apply to brushed motors
         setSmartCurrentLimit(currentLimit);
 
-        delta =
-                min(
-                        temperatureRampLimit - temperatureRampThreshold,
-                        1.0); // Safety margin - don't want divide by 0!
+        delta = min(temperatureRampLimit - temperatureRampThreshold,
+                    1.0); // Safety margin - don't want divide by 0!
+    }
+
+    @Override
+    @Description("Does not apply to brushed motors!")
+    public void setCurrentLimit(int currentLimit) {
+        this.currentLimit = currentLimit;
+        setSmartCurrentLimit(currentLimit);
     }
 
     public static void check(REVLibError command) {
@@ -122,6 +133,7 @@ public class StormSpark extends CANSparkMax implements MotorController {
 
     public enum MotorKind {
         kNeo,
-        k550
+        k550,
+        kGeneric
     }
 }

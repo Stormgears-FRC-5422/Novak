@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pigeon;
 
-public class PigeonCommand extends Command {
+public class PigeonCommand extends StormCommand {
     private final Pigeon pigeon;
     private int counter;
 
@@ -17,6 +17,7 @@ public class PigeonCommand extends Command {
 
     @Override
     public void initialize() {
+        super.initialize();
         counter = 0;
     }
 

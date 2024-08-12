@@ -19,7 +19,7 @@ public interface MotorController {
 
     void getAnglePosition();
 
-
+    void setCurrentLimit(int currentLimit);
 
 
 

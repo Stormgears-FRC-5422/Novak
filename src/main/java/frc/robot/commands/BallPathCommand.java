@@ -5,7 +5,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Storage;
 import frc.robot.subsystems.Shooter;
 
-public class BallPathCommand extends Command {
+public class BallPathCommand extends StormCommand {
     /** Creates a new Intake. */
     Intake intake;
     Storage storage;
@@ -25,6 +25,8 @@ public class BallPathCommand extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+        super.initialize();
+
         intake.setIntakeState(forward ? Intake.IntakeState.FORWARD : Intake.IntakeState.REVERSE);
         storage.setStorageState(forward ? Storage.StorageState.FORWARD : Storage.StorageState.REVERSE);
         shooter.setShooterState(forward ? Shooter.ShooterState.FORWARD : Shooter.ShooterState.REVERSE);
@@ -43,6 +45,7 @@ public class BallPathCommand extends Command {
         intake.setIntakeState(Intake.IntakeState.OFF);
         storage.setStorageState(Storage.StorageState.OFF);
         shooter.setShooterState(Shooter.ShooterState.OFF);
+        super.end(interrupted);
     }
 
     @Override

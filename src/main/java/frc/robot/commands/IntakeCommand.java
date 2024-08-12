@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Storage;
 
-public class IntakeCommand extends Command {
+public class IntakeCommand extends StormCommand {
   /** Creates a new Intake. */
   private final Intake intake;
   Storage storage;
@@ -23,6 +23,8 @@ public class IntakeCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    super.initialize();
+
     intake.setIntakeState(Intake.IntakeState.FORWARD);
     storage.setStorageState(Storage.StorageState.FORWARD);
     counter = 0;
@@ -39,6 +41,7 @@ public class IntakeCommand extends Command {
   public void end(boolean interrupted) {
     intake.setIntakeState(Intake.IntakeState.OFF);
     storage.setStorageState(Storage.StorageState.OFF);
+    super.end(interrupted);
   }
 
   // Returns true when the command should end.
