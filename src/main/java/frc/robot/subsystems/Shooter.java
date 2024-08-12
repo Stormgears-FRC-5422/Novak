@@ -10,7 +10,8 @@ public class Shooter extends SubsystemBase {
     public enum ShooterState {
         FORWARD,
         REVERSE,
-        OFF
+        OFF,
+        WARMUP
     }
 
     private final CANSparkMax shooterMotor;
@@ -52,6 +53,9 @@ public class Shooter extends SubsystemBase {
             }
             case REVERSE -> {
                 setSpeed(-Constants.Shooter.shooterSpeed);
+            }
+            case WARMUP -> {
+                setSpeed(Constants.Shooter.shooterWarmup);
             }
         }
     }
