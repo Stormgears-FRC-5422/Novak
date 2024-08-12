@@ -113,12 +113,30 @@ public class Lights extends SubsystemBase {
         m_ledLightStrip.setLEDColor(0,(LEFT_SIDE.numberOfLEDs + runwayIndex-1) % LEFT_SIDE.numberOfLEDs, TEAL_COLOR);
         m_ledLightStrip.setLEDColor(0,(LEFT_SIDE.numberOfLEDs + runwayIndex-2) % LEFT_SIDE.numberOfLEDs, TEAL_COLOR);
         m_ledLightStrip.setLEDColor(0,(LEFT_SIDE.numberOfLEDs + runwayIndex-3) % LEFT_SIDE.numberOfLEDs, TEAL_COLOR);
+
         m_ledLightStrip.setLEDColor(1,(runwayIndex) % LEFT_SIDE.numberOfLEDs, TEAL_COLOR);
         m_ledLightStrip.setLEDColor(1,(runwayIndex+1) % LEFT_SIDE.numberOfLEDs, TEAL_COLOR);
         m_ledLightStrip.setLEDColor(1,(runwayIndex+2) % LEFT_SIDE.numberOfLEDs, TEAL_COLOR);
-        m_ledLightStrip.setLEDColor(1,(LEFT_SIDE.numberOfLEDs + runwayIndex-1) % LEFT_SIDE.numberOfLEDs, TEAL_COLOR);
-        m_ledLightStrip.setLEDColor(1,(LEFT_SIDE.numberOfLEDs + runwayIndex-2) % LEFT_SIDE.numberOfLEDs, TEAL_COLOR);
-        m_ledLightStrip.setLEDColor(1,(LEFT_SIDE.numberOfLEDs + runwayIndex-3) % LEFT_SIDE.numberOfLEDs, TEAL_COLOR);
+        m_ledLightStrip.setLEDColor(1,(RIGHT_SIDE.numberOfLEDs + runwayIndex-1) % LEFT_SIDE.numberOfLEDs, TEAL_COLOR);
+        m_ledLightStrip.setLEDColor(1,(RIGHT_SIDE.numberOfLEDs + runwayIndex-2) % LEFT_SIDE.numberOfLEDs, TEAL_COLOR);
+        m_ledLightStrip.setLEDColor(1,(RIGHT_SIDE.numberOfLEDs + runwayIndex-3) % LEFT_SIDE.numberOfLEDs, TEAL_COLOR);
+        runwayIndex += 1;
+    }
+
+    private void backRunway (){
+        m_ledLightStrip.setLEDColor(0,LEFT_SIDE.numberOfLEDs - ((runwayIndex) % LEFT_SIDE.numberOfLEDs), TEAL_COLOR);
+        m_ledLightStrip.setLEDColor(0,LEFT_SIDE.numberOfLEDs - ((runwayIndex+1) % LEFT_SIDE.numberOfLEDs), TEAL_COLOR);
+        m_ledLightStrip.setLEDColor(0,LEFT_SIDE.numberOfLEDs - ((runwayIndex+2) % LEFT_SIDE.numberOfLEDs), TEAL_COLOR);
+        m_ledLightStrip.setLEDColor(0,LEFT_SIDE.numberOfLEDs - ((LEFT_SIDE.numberOfLEDs + runwayIndex-1) % LEFT_SIDE.numberOfLEDs), TEAL_COLOR);
+        m_ledLightStrip.setLEDColor(0,LEFT_SIDE.numberOfLEDs - ((LEFT_SIDE.numberOfLEDs + runwayIndex-2) % LEFT_SIDE.numberOfLEDs), TEAL_COLOR);
+        m_ledLightStrip.setLEDColor(0,LEFT_SIDE.numberOfLEDs - ((LEFT_SIDE.numberOfLEDs + runwayIndex-3) % LEFT_SIDE.numberOfLEDs), TEAL_COLOR);
+
+        m_ledLightStrip.setLEDColor(1,RIGHT_SIDE.numberOfLEDs - ((runwayIndex) % LEFT_SIDE.numberOfLEDs), TEAL_COLOR);
+        m_ledLightStrip.setLEDColor(1,RIGHT_SIDE.numberOfLEDs - ((runwayIndex+1) % LEFT_SIDE.numberOfLEDs), TEAL_COLOR);
+        m_ledLightStrip.setLEDColor(1,RIGHT_SIDE.numberOfLEDs - ((runwayIndex+2) % LEFT_SIDE.numberOfLEDs), TEAL_COLOR);
+        m_ledLightStrip.setLEDColor(1,RIGHT_SIDE.numberOfLEDs - ((RIGHT_SIDE.numberOfLEDs + runwayIndex-1) % LEFT_SIDE.numberOfLEDs), TEAL_COLOR);
+        m_ledLightStrip.setLEDColor(1,RIGHT_SIDE.numberOfLEDs - ((RIGHT_SIDE.numberOfLEDs + runwayIndex-2) % LEFT_SIDE.numberOfLEDs), TEAL_COLOR);
+        m_ledLightStrip.setLEDColor(1,RIGHT_SIDE.numberOfLEDs - ((RIGHT_SIDE.numberOfLEDs + runwayIndex-3) % LEFT_SIDE.numberOfLEDs), TEAL_COLOR);
         runwayIndex += 1;
     }
 
