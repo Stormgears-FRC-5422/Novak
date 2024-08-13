@@ -67,7 +67,7 @@ public class Lights extends SubsystemBase {
         // Lights may be expensive to check, and some updates can come too fast.
         // Keep a counter to make updates less frequent
 
-        runway(false,PINK_COLOR,TEAL_COLOR);
+        runway(false,PINK_COLOR,TEAL_COLOR, 6);
         m_ledLightStrip.setLEDData();
     }
 
@@ -102,22 +102,22 @@ public class Lights extends SubsystemBase {
         m_ledLightStrip.setLEDColor(s.number, c);
     }
 
-    private void runway (boolean forward,Color8Bit backColor, Color8Bit stripColor){
+    private void runway (boolean forward,Color8Bit backColor, Color8Bit stripColor, int runwayLength){
         setSegmentColor(LEFT_SIDE, backColor);
         setSegmentColor(RIGHT_SIDE, backColor);
-        runway_setIndex(forward, LEFT_SIDE, stripColor);
-        runway_setIndex(forward, RIGHT_SIDE, stripColor);
+        runway_setIndex(forward, LEFT_SIDE, stripColor, runwayLength);
+        runway_setIndex(forward, RIGHT_SIDE, stripColor, runwayLength);
         runwayIndex += 1;
     }
 
-    private void runway_setIndex(boolean forward, Segment side, Color8Bit stripColor)
+    private void runway_setIndex(boolean forward, Segment side, Color8Bit stripColor, int runwayLength)
     {
         int index1 = runwayIndex;
         int index2 = runwayIndex+1;
         int index3 = runwayIndex+2;
-        int index4 = side.numberOfLEDs + runwayIndex-1;
-        int index5 = side.numberOfLEDs + runwayIndex-2;
-        int index6 = side.numberOfLEDs + runwayIndex-3;
+        int index4 = runwayIndex+3;
+        int index5 = runwayIndex+4;
+        int index6 = runwayIndex+5;
 
         runway_setLEDColor(side.number, index1, forward, side.numberOfLEDs,stripColor);
         runway_setLEDColor(side.number, index2, forward, side.numberOfLEDs,stripColor);
