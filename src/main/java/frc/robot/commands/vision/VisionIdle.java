@@ -76,7 +76,7 @@ public class VisionIdle extends Command {
 
             if (visionSubsystem.hasValidTarget()) {
 
-                double tx = visionSubsystem.getTXandTY()[0];
+                double tx = visionSubsystem.getTX();
                 if (tx > 0) {
 
                     VisionState visionState = VisionState.RIGHT;

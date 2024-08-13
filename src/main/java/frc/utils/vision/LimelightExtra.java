@@ -56,12 +56,13 @@ public class LimelightExtra {
         NetworkTable table = NetworkTableInstance.getDefault().getTable(limelight);
         table.getEntry("pipeline").setNumber(pipeline);
     }
-    public double[] getTXandTY(String limelight) { //Gets the Horizontal and Vertical Offset From Crosshair To Target
+    public double getTX(String limelight){
         NetworkTable table = NetworkTableInstance.getDefault().getTable(limelight);
-        double[] txandty = new double[2];
-        txandty[0] = table.getEntry("tx").getDouble(0);
-        txandty[1] = table.getEntry("ty").getDouble(0);
-        return txandty;
+        return table.getEntry("tx").getDouble(0);
+    }
+    public double getTY(String limelight){
+        NetworkTable table = NetworkTableInstance.getDefault().getTable(limelight);
+        return table.getEntry("ty").getDouble(0);
     }
     public void changeToDetectorPipeline(String limelight) { //Changes the pipeline to the detector pipeline
         NetworkTable table = NetworkTableInstance.getDefault().getTable(limelight);

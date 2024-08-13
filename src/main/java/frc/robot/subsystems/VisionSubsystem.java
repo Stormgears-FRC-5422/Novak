@@ -41,9 +41,13 @@ public class VisionSubsystem extends SubsystemBase {
         }
         return Optional.empty();
     }
-    public double[] getTXandTY(){
+    public double getTX(){
         LimelightExtra limelightExtra = new LimelightExtra();
-        return limelightExtra.getTXandTY(limelight);
+        return limelightExtra.getTX(limelight);
+    }
+    public double getTY(){
+        LimelightExtra limelightExtra = new LimelightExtra();
+        return limelightExtra.getTY(limelight);
     }
     public void changeToDetectorPipeline(){
         LimelightExtra limelightExtra = new LimelightExtra();
