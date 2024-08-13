@@ -55,7 +55,7 @@ public class Lights extends SubsystemBase {
         BLUE_COLOR = scaleColor(new Color8Bit(0, 0, 255), Constants.Lights.brightness);
         ORANGE_COLOR = scaleColor(new Color8Bit(255, 32, 0), Constants.Lights.brightness);
         YELLOW_COLOR = scaleColor(new Color8Bit(255, 255, 0), Constants.Lights.brightness);
-        WHITE_COLOR = scaleColor(new Color8Bit(84, 84, 84), Constants.Lights.brightness);
+        WHITE_COLOR = scaleColor(new Color8Bit(86, 86, 86), Constants.Lights.brightness);
         PURPLE_COLOR = scaleColor(new Color8Bit(138,0,196), Constants.Lights.brightness);
         PINK_COLOR = scaleColor(new Color8Bit(255,5,90), Constants.Lights.brightness);
         TEAL_COLOR = scaleColor(new Color8Bit(0,128,128), Constants.Lights.brightness);
@@ -66,10 +66,8 @@ public class Lights extends SubsystemBase {
     public void periodic() {
         // Lights may be expensive to check, and some updates can come too fast.
         // Keep a counter to make updates less frequent
-        setSegmentColor(LEFT_SIDE, PINK_COLOR);
-        setSegmentColor(RIGHT_SIDE, PINK_COLOR);
 
-        runway(false);
+        runway(false,PINK_COLOR,TEAL_COLOR);
         m_ledLightStrip.setLEDData();
     }
 
@@ -104,13 +102,15 @@ public class Lights extends SubsystemBase {
         m_ledLightStrip.setLEDColor(s.number, c);
     }
 
-    private void runway (boolean forward){
-        runway_setIndex(forward, LEFT_SIDE);
-        runway_setIndex(forward, RIGHT_SIDE);
+    private void runway (boolean forward,Color8Bit backColor, Color8Bit stripColor){
+        setSegmentColor(LEFT_SIDE, backColor);
+        setSegmentColor(RIGHT_SIDE, backColor);
+        runway_setIndex(forward, LEFT_SIDE, stripColor);
+        runway_setIndex(forward, RIGHT_SIDE, stripColor);
         runwayIndex += 1;
     }
 
-    private void runway_setIndex(boolean forward, Segment side)
+    private void runway_setIndex(boolean forward, Segment side, Color8Bit stripColor)
     {
         int index1 = runwayIndex;
         int index2 = runwayIndex+1;
@@ -119,20 +119,19 @@ public class Lights extends SubsystemBase {
         int index5 = side.numberOfLEDs + runwayIndex-2;
         int index6 = side.numberOfLEDs + runwayIndex-3;
 
-        runway_setLEDColor(side.number, index1, forward, side.numberOfLEDs);
-        runway_setLEDColor(side.number, index2, forward, side.numberOfLEDs);
-        runway_setLEDColor(side.number, index3, forward, side.numberOfLEDs);
-        runway_setLEDColor(side.number, index4, forward, side.numberOfLEDs);
-        runway_setLEDColor(side.number, index5, forward, side.numberOfLEDs);
-        runway_setLEDColor(side.number, index6, forward, side.numberOfLEDs);
+        runway_setLEDColor(side.number, index1, forward, side.numberOfLEDs,stripColor);
+        runway_setLEDColor(side.number, index2, forward, side.numberOfLEDs,stripColor);
+        runway_setLEDColor(side.number, index3, forward, side.numberOfLEDs,stripColor);
+        runway_setLEDColor(side.number, index4, forward, side.numberOfLEDs,stripColor);
+        runway_setLEDColor(side.number, index5, forward, side.numberOfLEDs,stripColor);
+        runway_setLEDColor(side.number, index6, forward, side.numberOfLEDs,stripColor);
     }
 
-    private void runway_setLEDColor(int side, int index, boolean forward, int numLEDs) {
-        Color8Bit color = TEAL_COLOR ;
+    private void runway_setLEDColor(int side, int index, boolean forward, int numLEDs, Color8Bit stripColor) {
 
         if (forward)
-            m_ledLightStrip.setLEDColor(side,(index) % numLEDs, color);
+            m_ledLightStrip.setLEDColor(side,(index) % numLEDs, stripColor);
         else
-            m_ledLightStrip.setLEDColor(side,(numLEDs-1) - ((index) % numLEDs), color);
+            m_ledLightStrip.setLEDColor(side,(numLEDs-1) - ((index) % numLEDs), stripColor);
     }
 }
