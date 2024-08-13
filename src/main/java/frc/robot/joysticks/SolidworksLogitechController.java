@@ -31,4 +31,9 @@ public class SolidworksLogitechController extends SolidworksJoystick {
     public boolean ballPathReverse() {
         return controller.getRawButton(6);
     }
+
+    @Override
+    public boolean drivetoBall() {
+        return controller.getRawButton(3);
+    }
 }
