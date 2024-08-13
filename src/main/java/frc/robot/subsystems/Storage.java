@@ -22,7 +22,7 @@ public class Storage extends SubsystemBase {
 
     public Storage() {
         storageMotor = new StormSpark(Constants.Storage.storageID, StormSpark.MotorType.kBrushless, StormSpark.MotorKind.k550);
-        storageMotor.setInverted(true);
+        storageMotor.setInverted(false);
         setStorageState(StorageState.OFF);
     }
 

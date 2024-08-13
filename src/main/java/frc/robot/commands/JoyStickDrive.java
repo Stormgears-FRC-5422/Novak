@@ -21,7 +21,6 @@ public class JoyStickDrive extends StormCommand {
     private final DoubleSupplier turboSupplier;
 
     private RobotState m_state;
-    private boolean m_finish = true;
     private boolean m_flipJoystick = false;
     private final SlewRateLimiter speedScaleLimiter = new SlewRateLimiter(0.5);
 
@@ -45,9 +44,7 @@ public class JoyStickDrive extends StormCommand {
     }
 
     @Override
-    public boolean isFinished() {
-        return m_finish;
-    }
+    public boolean isFinished() { return false; }
 
     @Override
     public void end(boolean interrupted) {

@@ -30,8 +30,10 @@ public class Shooter extends SubsystemBase {
 
         m_alternateEncoder = shooterMotor.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, Constants.Shooter.encoderTicksPerRev);
 
-        gateMotor = new StormSpark(Constants.Shooter.shooterID, CANSparkLowLevel.MotorType.kBrushed, StormSpark.MotorKind.k550);
-        gateMotor.setSmartCurrentLimit()
+        gateMotor = new StormSpark(Constants.Shooter.gateID, CANSparkLowLevel.MotorType.kBrushed, StormSpark.MotorKind.k550);
+        gateMotor.setInverted(true);
+        // DOC says this doesn't work with brushed motors
+        gateMotor.setSmartCurrentLimit(Constants.Shooter.gateCurrentLimit);
         gateMotor.setIdleMode(CANSparkBase.IdleMode.kBrake);
 
         setShooterState(ShooterState.OFF);
@@ -41,9 +43,9 @@ public class Shooter extends SubsystemBase {
     public void periodic() {
         shooterMotor.set(speed);
         gateMotor.set(gatePower);
-        if (gatePower > 0) {
-            System.out.println("Gate output current: " + gateMotor.getOutputCurrent());
-        }
+//        if (gatePower != 0) {
+//            System.out.println("Gate output current: " + gateMotor.getOutputCurrent());
+//        }
 //        m_currentPosition = m_alternateEncoder.getPosition();
 //        System.out.println("alr encoder position: " + m_alternateEncoder.getPosition());
 //        System.out.println("alr encoder velocity: " + m_alternateEncoder.getVelocity());

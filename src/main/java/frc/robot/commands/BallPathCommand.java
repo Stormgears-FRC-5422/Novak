@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Storage;
 import frc.robot.subsystems.Shooter;
@@ -50,6 +51,6 @@ public class BallPathCommand extends StormCommand {
 
     @Override
     public boolean isFinished() {
-        return counter >= 5000;
+        return counter >= Constants.Shooter.maxRunTime;
     }
 }

@@ -68,10 +68,10 @@ public class RobotContainer {
         }
 
         //To implement a trigger, make a function in the following classes: SolidworksJoystick, SolidworksLogitechController, SolidworksXboxController, SolidworksDummyController
-        if (Toggles.usePigeon) {
-            pigeon = new Pigeon();
-            pigeon.setDefaultCommand(new PigeonCommand(pigeon));
-        }
+//        if (Toggles.usePigeon) {
+//            pigeon = new Pigeon();
+//            pigeon.setDefaultCommand(new PigeonCommand(pigeon));
+//        }
 
         if (Toggles.useVision) {
             visionSubsystem = new VisionSubsystem(Vision.limelightId);
@@ -113,12 +113,12 @@ public class RobotContainer {
             new Trigger(()->joystick.drivetoBall()).onTrue(driveToBall);
         }
         if (Toggles.useIntake){
-            new Trigger(()-> joystick.intake()).onTrue(intakeCommand);
+            new Trigger(()-> joystick.intake()).whileTrue(intakeCommand);
         }
             //new Trigger(()-> joystick.intake()).onTrue(new ParallelCommandGroup(intakeCommand, storageCommand));
         //}
         if (Toggles.useShooter){
-            new Trigger(()-> joystick.shoot()).onTrue(shootCommand);
+            new Trigger(()-> joystick.shoot()).whileTrue(shootCommand);
             //new Trigger(()-> joystick.shoot()).onTrue(new ParallelCommandGroup(shoot, storageCommand));
         }
 
