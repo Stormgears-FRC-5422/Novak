@@ -110,7 +110,7 @@ public class RobotContainer {
     private void configureBindings() {
         System.out.println("configure button");
         if (Toggles.useDrive&& Toggles.useVision) {
-            new Trigger(()->joystick.drivetoBall()).onTrue(driveToBall);
+            //new Trigger(()->joystick.drivetoBall()).onTrue(driveToBall);
         }
         if (Toggles.useIntake){
             new Trigger(()-> joystick.intake()).whileTrue(intakeCommand);
