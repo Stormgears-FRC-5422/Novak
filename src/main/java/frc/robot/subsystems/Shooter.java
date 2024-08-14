@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.*;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.utils.motorcontrol.StormSpark;
@@ -21,6 +22,8 @@ public class Shooter extends SubsystemBase {
 
     private double m_currentPosition;
     private final RelativeEncoder m_alternateEncoder;
+
+    private final PIDController pidController;
     double speed;
     double gatePower;
 
@@ -37,6 +40,9 @@ public class Shooter extends SubsystemBase {
         gateMotor.setIdleMode(CANSparkBase.IdleMode.kBrake);
 
         setShooterState(ShooterState.OFF);
+
+        pidController = new PIDController(0,0,0);
+        pidController.setSetpoint(0);
     }
 
     @Override
@@ -80,10 +86,13 @@ public class Shooter extends SubsystemBase {
     }
 
     private void setSpeed(double speed) {
-        this.speed = speed;
+        speed = pidController.calculate(speed);
+        shooterMotor.set(speed);
     }
 
-    private void setGatePower(double power) { this.gatePower = power; }
+    private void setGatePower(double power) {
+        this.gatePower = power;
+    }
 
 //    public double getCurrentPosition() {
 //        return m_currentPosition;
