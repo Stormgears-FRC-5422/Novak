@@ -66,7 +66,7 @@ public class Lights extends SubsystemBase {
         // Lights may be expensive to check, and some updates can come too fast.
         // Keep a counter to make updates less frequent
 
-        runway(false,PINK_COLOR,TEAL_COLOR, 6);
+        runway(false,PINK_COLOR,TEAL_COLOR, Constants.Lights.runwayLength);
         m_ledLightStrip.setLEDData();
     }
 
