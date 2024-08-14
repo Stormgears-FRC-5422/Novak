@@ -47,7 +47,6 @@ public class Lights extends SubsystemBase {
     private LEDLightStrip m_ledLightStrip;
     boolean m_ledColorRequested;
 
-    int count = 0;
 
     public Lights() {
         RED_COLOR = scaleColor(new Color8Bit(255, 0, 0), Constants.Lights.brightness);
@@ -107,31 +106,20 @@ public class Lights extends SubsystemBase {
         setSegmentColor(RIGHT_SIDE, backColor);
         runway_setIndex(forward, LEFT_SIDE, stripColor, runwayLength);
         runway_setIndex(forward, RIGHT_SIDE, stripColor, runwayLength);
-        runwayIndex += 1;
+
+        if (forward)
+            runwayIndex+=1;
+        else
+            runwayIndex-=1;
+
     }
 
     private void runway_setIndex(boolean forward, Segment side, Color8Bit stripColor, int runwayLength)
     {
-        int index1 = runwayIndex;
-        int index2 = runwayIndex+1;
-        int index3 = runwayIndex+2;
-        int index4 = runwayIndex+3;
-        int index5 = runwayIndex+4;
-        int index6 = runwayIndex+5;
-
-        runway_setLEDColor(side.number, index1, forward, side.numberOfLEDs,stripColor);
-        runway_setLEDColor(side.number, index2, forward, side.numberOfLEDs,stripColor);
-        runway_setLEDColor(side.number, index3, forward, side.numberOfLEDs,stripColor);
-        runway_setLEDColor(side.number, index4, forward, side.numberOfLEDs,stripColor);
-        runway_setLEDColor(side.number, index5, forward, side.numberOfLEDs,stripColor);
-        runway_setLEDColor(side.number, index6, forward, side.numberOfLEDs,stripColor);
+        for (int index = 0; index < runwayLength; index++ ){
+            m_ledLightStrip.setLEDColor(side.number,runwayIndex+index, stripColor);
+        }
     }
 
-    private void runway_setLEDColor(int side, int index, boolean forward, int numLEDs, Color8Bit stripColor) {
 
-        if (forward)
-            m_ledLightStrip.setLEDColor(side,(index) % numLEDs, stripColor);
-        else
-            m_ledLightStrip.setLEDColor(side,(numLEDs-1) - ((index) % numLEDs), stripColor);
-    }
 }

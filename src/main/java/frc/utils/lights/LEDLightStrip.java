@@ -89,6 +89,8 @@ public class LEDLightStrip {
     if (color != null) {
       SegmentDetails segment = this.getSegment(segmentNumber);
       index = index % segment.numLEDs;
+      if (index < 0) index += segment.numLEDs;
+
       if (segment.lightType == LightType.RGBW) {
         this.buffer.setRGBW4(segment.startPosition, index, color.red, color.green, color.blue, 0);
       } else if (segment.lightType == LightType.RGB) {
