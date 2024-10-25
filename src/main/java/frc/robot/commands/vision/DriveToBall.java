@@ -15,7 +15,7 @@ import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
 
 public class DriveToBall extends Command {
-    private static int TARGET =  -Constants.DriveToBall.targetOffset;
+    private static int TARGET =  Constants.DriveToBall.targetOffset;
     private final PIDController translationController = new PIDController(Constants.DriveToBall.translationKp,
             Constants.DriveToBall.translationKi, Constants.DriveToBall.translationKd);
     private final PIDController rotationController = new PIDController(Constants.DriveToBall.rotationKp,
