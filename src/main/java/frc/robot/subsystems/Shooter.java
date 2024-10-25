@@ -4,6 +4,7 @@ import com.revrobotics.*;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.utils.configfile.StormProp;
 import frc.utils.motorcontrol.StormSpark;
 
 public class Shooter extends SubsystemBase {
@@ -41,20 +42,33 @@ public class Shooter extends SubsystemBase {
 
         setShooterState(ShooterState.OFF);
 
-        pidController = new PIDController(0,0,0);
         pidController.setSetpoint(0);
+
+
+        double kP = StormProp.getNumber("shooterKP", 0.0);
+//        double kI = StormProp.getNumber("shooterKI", 0.0);
+        double kD = StormProp.getNumber("shooterKD", 0.0);
+
+        pidController = new PIDController(0,0,0);
+    }
+
+    private void getToSpeed() {
+
     }
 
     @Override
     public void periodic() {
         shooterMotor.set(speed);
         gateMotor.set(gatePower);
+
 //        if (gatePower != 0) {
 //            System.out.println("Gate output current: " + gateMotor.getOutputCurrent());
 //        }
-//        m_currentPosition = m_alternateEncoder.getPosition();
-//        System.out.println("alr encoder position: " + m_alternateEncoder.getPosition());
-//        System.out.println("alr encoder velocity: " + m_alternateEncoder.getVelocity());
+
+
+
+        m_currentPosition = m_alternateEncoder.getPosition();
+        System.out.println("alr encoder position: " + m_alternateEncoder.getPosition());
     }
 
     // TODO - we need to be smarter about the gate
@@ -66,7 +80,7 @@ public class Shooter extends SubsystemBase {
                 setGatePower(0.0);
             }
             case FORWARD -> {
-                setSpeed(Constants.Shooter.shooterSpeed);
+                setSpeed(pidController.calculate(0.75));
                 setGatePower(Constants.Shooter.gatePower);
             }
             case REVERSE -> {
@@ -87,7 +101,8 @@ public class Shooter extends SubsystemBase {
 
     private void setSpeed(double speed) {
         speed = pidController.calculate(speed);
-        shooterMotor.set(speed);
+
+//        shooterMotor.set(speed);
     }
 
     private void setGatePower(double power) {
