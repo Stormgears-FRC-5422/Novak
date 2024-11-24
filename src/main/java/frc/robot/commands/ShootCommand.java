@@ -23,7 +23,6 @@ public class ShootCommand extends StormCommand {
     @Override
     public void initialize() {
         super.initialize();
-
         count = 0;
         shooter.setShooterState(Shooter.ShooterState.WARMUP);
         storage.setStorageState(Storage.StorageState.OFF);

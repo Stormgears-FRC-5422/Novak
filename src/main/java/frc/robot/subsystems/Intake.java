@@ -21,16 +21,16 @@ public class Intake extends SubsystemBase {
 
   /** Creates a new Intake. */
   public Intake() {
-    // used fake id, change to real motor id later
     intakeMotor = new StormSpark(Constants.Intake.intakeID, CANSparkLowLevel.MotorType.kBrushless, StormSpark.MotorKind.k550);
     intakeMotor.setInverted(true);
     setIntakeState(IntakeState.OFF);
+    //set intake motor
   }
 
   @Override
   public void periodic() {
     intakeMotor.set(intakeMotorSpeed);
-  }
+  } //speed
 
   public void setIntakeState(IntakeState state) {
     switch (state) {
@@ -45,6 +45,7 @@ public class Intake extends SubsystemBase {
       }
     }
   }
+  //different intake states
 
   private void setSpeed(double speed) {
     intakeMotorSpeed = speed;

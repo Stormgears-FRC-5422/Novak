@@ -11,4 +11,5 @@ public interface DriveJoystick {
     double getWpiXSpeed();
     double getWpiYSpeed();
     double getOmegaSpeed();
+
 }
