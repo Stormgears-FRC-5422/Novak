@@ -13,7 +13,6 @@ public class Shooter extends SubsystemBase {
         FORWARD,
         REVERSE,
         GATE_ONLY,
-        ALLISON,
     }
 
     ShooterState shooterState;
@@ -27,15 +26,13 @@ public class Shooter extends SubsystemBase {
     private final PIDController pidController;
     double speed;
     double gatePower;
-    int counter;
 
     public Shooter() {
         shooterMotor = new StormSpark(Constants.Shooter.shooterID, CANSparkLowLevel.MotorType.kBrushless, StormSpark.MotorKind.kNeo);
         shooterMotor.setInverted(true);
-        shooterMotor.enableVoltageCompensation(12.0);
 
         m_alternateEncoder = shooterMotor.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, Constants.Shooter.encoderTicksPerRev);
-        m_alternateEncoder.setVelocityConversionFactor(1.0);
+
         gateMotor = new StormSpark(Constants.Shooter.gateID, CANSparkLowLevel.MotorType.kBrushed, StormSpark.MotorKind.k550);
         gateMotor.setInverted(true);
         // DOC says this doesn't work with brushed motors
@@ -55,13 +52,9 @@ public class Shooter extends SubsystemBase {
 //        if (gatePower != 0) {
 //            System.out.println("Gate output current: " + gateMotor.getOutputCurrent());
 //        }
-        //m_currentPosition = m_alternateEncoder.getPosition();
-        //System.out.println("alr encoder position: " + m_alternateEncoder.getPosition());
-            if (counter++%50==0){
-           //System.out.println("alr encoder velocity: " + m_alternateEncoder.getVelocity());
-            m_currentPosition = m_alternateEncoder.getPosition();
-            System.out.println("alr encoder position: " + m_alternateEncoder.getPosition());
-        }
+//        m_currentPosition = m_alternateEncoder.getPosition();
+//        System.out.println("alr encoder position: " + m_alternateEncoder.getPosition());
+//        System.out.println("alr encoder velocity: " + m_alternateEncoder.getVelocity());
     }
 
     // TODO - we need to be smarter about the gate
@@ -89,16 +82,12 @@ public class Shooter extends SubsystemBase {
                 setGatePower(Constants.Shooter.gatePower);
             }
 
-            case ALLISON -> {
-                setGatePower(0);
-            }
         }
     }
 
-    public void setSpeed(double speed) {
-       this.speed = speed;
-        // speed = pidController.calculate(speed); - fix later
-       // shooterMotor.set(speed);
+    private void setSpeed(double speed) {
+        speed = pidController.calculate(speed);
+        shooterMotor.set(speed);
     }
 
     private void setGatePower(double power) {
