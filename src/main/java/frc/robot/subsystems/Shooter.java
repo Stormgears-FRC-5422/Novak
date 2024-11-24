@@ -4,6 +4,7 @@ import com.revrobotics.*;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.utils.LoggerWrapper;
 import frc.utils.motorcontrol.StormSpark;
 
 public class Shooter extends SubsystemBase {
@@ -22,17 +23,19 @@ public class Shooter extends SubsystemBase {
     private final StormSpark gateMotor;
 
     private double m_currentPosition;
-    private final RelativeEncoder m_alternateEncoder;
+    private final RelativeEncoder m_builtInEncoder;
 
     private final PIDController pidController;
-    double speed;
+    public double speed;
     double gatePower;
 
     public Shooter() {
         shooterMotor = new StormSpark(Constants.Shooter.shooterID, CANSparkLowLevel.MotorType.kBrushless, StormSpark.MotorKind.kNeo);
         shooterMotor.setInverted(true);
 
-        m_alternateEncoder = shooterMotor.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, Constants.Shooter.encoderTicksPerRev);
+//        m_alternateEncoder = shooterMotor.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, Constants.Shooter.encoderTicksPerRev);
+
+        m_builtInEncoder = shooterMotor.getEncoder();
 
         gateMotor = new StormSpark(Constants.Shooter.gateID, CANSparkLowLevel.MotorType.kBrushed, StormSpark.MotorKind.k550);
         gateMotor.setInverted(true);
@@ -56,6 +59,14 @@ public class Shooter extends SubsystemBase {
 //        m_currentPosition = m_alternateEncoder.getPosition();
 //        System.out.println("alr encoder position: " + m_alternateEncoder.getPosition());
 //        System.out.println("alr encoder velocity: " + m_alternateEncoder.getVelocity());
+
+        double currentSpeed = m_builtInEncoder.getVelocity();
+        LoggerWrapper.recordOutput("Shooter/CurrentRPM", currentSpeed);
+
+        m_currentPosition = m_builtInEncoder.getPosition();
+        LoggerWrapper.recordOutput("Shooter/builtInEncoderPosition", m_currentPosition);
+
+        System.out.println("alr encoder position " + m_builtInEncoder.getPosition());
     }
 
     // TODO - we need to be smarter about the gate
@@ -86,7 +97,7 @@ public class Shooter extends SubsystemBase {
         }
     }
 
-    private void setSpeed(double speed) {
+    public void setSpeed(double speed) {
         speed = pidController.calculate(speed);
         shooterMotor.set(speed);
     }
