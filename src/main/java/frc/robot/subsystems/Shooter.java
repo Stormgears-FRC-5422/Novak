@@ -13,6 +13,7 @@ public class Shooter extends SubsystemBase {
         FORWARD,
         REVERSE,
         GATE_ONLY,
+        ALLISON,
     }
 
     ShooterState shooterState;
