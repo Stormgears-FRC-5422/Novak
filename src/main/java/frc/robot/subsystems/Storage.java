@@ -21,6 +21,7 @@ public class Storage extends SubsystemBase {
     private double storageMotorSpeed;
 
     public Storage() {
+        // setting motors
         storageMotor = new StormSpark(Constants.Storage.storageID, StormSpark.MotorType.kBrushless, StormSpark.MotorKind.k550);
         storageMotor.setInverted(false);
         setStorageState(StorageState.OFF);
@@ -29,9 +30,10 @@ public class Storage extends SubsystemBase {
     public void periodic() {
         storageMotor.set(storageMotorSpeed);
     }
+    //set speed
 
     public void setStorageState(StorageState state) {
-        switch (state) {
+        switch (state) {    //different states storage can be in
             case OFF -> {
                 setSpeed(0.0);
             }

@@ -25,8 +25,10 @@ import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.drive.DrivetrainBase;
 import frc.robot.subsystems.drive.DrivetrainFactory;
 import frc.robot.subsystems.drive.IllegalDriveTypeException;
+import frc.utils.joysticks.StormXboxController;
 
 import static frc.robot.Constants.ButtonBoard.driveJoystickPort;
+import static java.util.Objects.isNull;
 
 public class RobotContainer {
     VisionSubsystem visionSubsystem;
@@ -42,6 +44,7 @@ public class RobotContainer {
     VisionIdle visionIdle;
     AlignToAprilTag alignToAprilTag;
     ShootCommand shootCommand;
+    DiagnosticShooterCommand diagnosticShooterCommand;
     IntakeCommand intakeCommand;
     BallPathCommand ballPathCommandForward;
     BallPathCommand ballPathCommandReverse;
@@ -93,6 +96,12 @@ public class RobotContainer {
         if (Toggles.useShooter) {
             shooter = new Shooter();
             shootCommand = new ShootCommand(shooter, storage);
+
+            if(!isNull(joystick)) {
+                diagnosticShooterCommand = new DiagnosticShooterCommand(shooter, joystick);
+                shooter.setDefaultCommand(diagnosticShooterCommand);
+            }
+
         }
 
         if (Toggles.useShooter && Toggles.useIntake) {
@@ -119,6 +128,7 @@ public class RobotContainer {
         //}
         if (Toggles.useShooter){
             new Trigger(()-> joystick.shoot()).whileTrue(shootCommand);
+            new Trigger(()-> joystick.shootBackwards()).whileTrue(shootCommand);
             //new Trigger(()-> joystick.shoot()).onTrue(new ParallelCommandGroup(shoot, storageCommand));
         }
 

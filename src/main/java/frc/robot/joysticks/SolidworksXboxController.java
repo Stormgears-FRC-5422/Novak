@@ -26,7 +26,7 @@ public class SolidworksXboxController extends SolidworksJoystick {
     }
     @Override
     public boolean intake() {
-        return controller.getYButtonIsHeld();
+        return controller.getBButtonIsHeld();
     }
 
     @Override
@@ -47,6 +47,18 @@ public class SolidworksXboxController extends SolidworksJoystick {
 
     @Override
     public boolean shoot() {
-        return controller.getDownArrowPressed();
+        return controller.getXButtonIsHeld();
     }
+
+    public boolean shootBackwards() {
+        return controller.getYButtonIsHeld();
+    }
+
+    public double getRightTrigger() {
+        return controller.getRightTrigger();
+    }
+    public double getLeftTrigger() {
+        return controller.getLeftTrigger();
+    }
+
 }

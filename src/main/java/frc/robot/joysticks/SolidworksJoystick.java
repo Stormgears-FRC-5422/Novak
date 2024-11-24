@@ -38,6 +38,7 @@ public class SolidworksJoystick {
         }
     }
 
+
     public boolean getRobotRelative() {
         return (driveJoystick.getLeftTrigger() > 0.2);
     }
@@ -66,6 +67,10 @@ public class SolidworksJoystick {
         return false;
     }
 
+    public boolean shootBackwards() {
+        return false;
+    }
+
     public boolean intake() {
         return false;
     }
@@ -77,5 +82,13 @@ public class SolidworksJoystick {
     public boolean ballPathReverse() {
         return false;
     }
+
+    public double getRightTrigger() {
+        return 0;
+    }
+    public double getLeftTrigger() {
+        return 0;
+    }
+
 
 }
